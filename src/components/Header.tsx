@@ -6,6 +6,7 @@ interface HeaderProps {
   onCartClick: () => void;
   currentPage: 'home' | 'catalog' | 'about' | 'contact' | 'product' | 'account';
   setCurrentPage: (page: 'home' | 'catalog' | 'about' | 'contact' | 'product' | 'account') => void;
+  user: any;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -13,6 +14,7 @@ export const Header: React.FC<HeaderProps> = ({
   onCartClick,
   currentPage,
   setCurrentPage,
+  user,
 }) => {
   const [scrolled, setScrolled] = useState(false);
 
@@ -86,8 +88,8 @@ export const Header: React.FC<HeaderProps> = ({
 
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           {/* Account */}
-          <button className="cart-btn" onClick={() => setCurrentPage('account')} aria-label="My Account" style={{ background: 'none', color: '#c92c2c', padding: '8px', border: '1px solid #c92c2c', borderRadius: '50px' }}>
-            <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>Account</span>
+          <button className="cart-btn" onClick={() => setCurrentPage('account')} aria-label="My Account" style={{ background: 'none', color: '#c92c2c', padding: '8px 12px', border: '1px solid #c92c2c', borderRadius: '50px', cursor: 'pointer' }}>
+            <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>{user ? `Hi, ${user.name.split(' ')[0]}` : 'Sign In'}</span>
           </button>
 
           {/* Cart */}

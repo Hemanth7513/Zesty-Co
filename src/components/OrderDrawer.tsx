@@ -25,6 +25,8 @@ interface OrderDrawerProps {
   onUpdateQuantity: (id: string, delta: number) => void;
   onRemoveItem: (id: string) => void;
   clearCart: () => void;
+  user: any;
+  setUser: (user: any) => void;
 }
 
 export const OrderDrawer: React.FC<OrderDrawerProps> = ({
@@ -33,7 +35,9 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
   cartItems,
   onUpdateQuantity,
   onRemoveItem,
-  clearCart
+  clearCart,
+  user,
+  setUser
 }) => {
   const [name, setName]       = useState('');
   const [mobile, setMobile]   = useState('');
@@ -44,24 +48,33 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
   const [notes, setNotes]     = useState('');
   const [paymentMethod, setPaymentMethod] = useState('UPI');
 
-  // Load saved details on mount
+  // Load saved details on mount or user change
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem('zesty_customer_details');
-      if (saved) {
-        const d = JSON.parse(saved);
-        setName(d.name || '');
-        setMobile(d.mobile || '');
-        setDoorNo(d.doorNo || '');
-        setStreet(d.street || '');
-        setCity(d.city || '');
-        setPincode(d.pincode || '');
-        if (d.paymentMethod) setPaymentMethod(d.paymentMethod);
+    if (user) {
+      setName(user.name || '');
+      setMobile(user.mobile || '');
+      setDoorNo(user.doorNo || '');
+      setStreet(user.street || '');
+      setCity(user.city || '');
+      setPincode(user.pincode || '');
+    } else {
+      try {
+        const saved = localStorage.getItem('zesty_customer_details');
+        if (saved) {
+          const d = JSON.parse(saved);
+          setName(d.name || '');
+          setMobile(d.mobile || '');
+          setDoorNo(d.doorNo || '');
+          setStreet(d.street || '');
+          setCity(d.city || '');
+          setPincode(d.pincode || '');
+          if (d.paymentMethod) setPaymentMethod(d.paymentMethod);
+        }
+      } catch (err) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
     }
-  }, []);
+  }, [user]);
 
   // Save details whenever they change
   useEffect(() => {
@@ -93,6 +106,11 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
         items: cartItems
       });
       localStorage.setItem('zesty_order_history', JSON.stringify(history));
+      
+      // Update user profile with address
+      if (user) {
+        setUser({ ...user, name, mobile, doorNo, street, city, pincode });
+      }
     } catch (err) {
       console.error(err);
     }

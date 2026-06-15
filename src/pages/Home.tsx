@@ -1,5 +1,4 @@
 import React from 'react';
-import { ArrowRight, Leaf, ShieldCheck } from 'lucide-react';
 import type { Product } from '../data/products';
 import buffalo_sauce from '../assets/buffalo_sauce.png';
 
@@ -21,7 +20,7 @@ const TICKER_ITEMS = [
   'Vegetarian Always',
 ] as const;
 
-export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => (
+export const Home: React.FC<HomeProps> = () => (
   <div className="page-wrapper">
 
     {/* ── HERO ── */}

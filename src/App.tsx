@@ -19,6 +19,16 @@ interface CartItem {
   quantity: number;
 }
 
+export interface User {
+  name: string;
+  mobile: string;
+  email: string;
+  doorNo?: string;
+  street?: string;
+  city?: string;
+  pincode?: string;
+}
+
 // ── App ────────────────────────────────────────────────
 
 export default function App() {
@@ -33,16 +43,33 @@ export default function App() {
       return [];
     }
   });
+
+  const [user, setUser] = useState<User | null>(() => {
+    try {
+      const saved = localStorage.getItem('zesty_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
   
   const [drawerOpen, setDrawer] = useState(false);
 
   // Scroll to top whenever the page changes
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [page]);
 
-  // Persist cart
+  // Persist cart and user
   useEffect(() => {
     localStorage.setItem('zesty_cart', JSON.stringify(cart));
   }, [cart]);
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('zesty_user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('zesty_user');
+    }
+  }, [user]);
 
   // ── Cart logic ──────────────────────────────────────
 
@@ -82,6 +109,7 @@ export default function App() {
         onCartClick={() => setDrawer(true)}
         currentPage={page}
         setCurrentPage={setPage}
+        user={user}
       />
 
       <main>
@@ -89,7 +117,7 @@ export default function App() {
         {page === 'catalog' && <Catalog onAddToCart={addToCart} onSelectProduct={(p) => { setSelectedProduct(p); setPage('product'); }} />}
         {page === 'about'   && <About />}
         {page === 'contact' && <Contact />}
-        {page === 'account' && <Account />}
+        {page === 'account' && <Account user={user} setUser={setUser} />}
         {page === 'product' && selectedProduct && (
           <ProductDetail 
             product={selectedProduct} 
@@ -108,6 +136,8 @@ export default function App() {
         onUpdateQuantity={updateQty}
         onRemoveItem={removeItem}
         clearCart={() => setCart([])}
+        user={user}
+        setUser={setUser}
       />
     </>
   );
