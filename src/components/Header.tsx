@@ -4,8 +4,8 @@ import { ShoppingBag } from 'lucide-react';
 interface HeaderProps {
   cartCount: number;
   onCartClick: () => void;
-  currentPage: 'home' | 'catalog' | 'about';
-  setCurrentPage: (page: 'home' | 'catalog' | 'about') => void;
+  currentPage: 'home' | 'catalog' | 'about' | 'contact' | 'product' | 'account';
+  setCurrentPage: (page: 'home' | 'catalog' | 'about' | 'contact' | 'product' | 'account') => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -22,7 +22,7 @@ export const Header: React.FC<HeaderProps> = ({
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const nav = (page: 'home' | 'catalog' | 'about', label: string) => (
+  const nav = (page: 'home' | 'catalog' | 'about' | 'contact', label: string) => (
     <li key={page}>
       <a
         href={`#${page}`}
@@ -80,17 +80,25 @@ export const Header: React.FC<HeaderProps> = ({
             {nav('home', 'Home')}
             {nav('catalog', 'Our Sauces')}
             {nav('about', 'Our Story')}
+            {nav('contact', 'Contact')}
           </ul>
         </nav>
 
-        {/* Cart */}
-        <button className="cart-btn" onClick={onCartClick} id="cart-toggle" aria-label="Open cart">
-          <ShoppingBag size={16} />
-          <span>Cart</span>
-          {cartCount > 0 && (
-            <span className="cart-badge" aria-label={`${cartCount} items in cart`}>{cartCount}</span>
-          )}
-        </button>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          {/* Account */}
+          <button className="cart-btn" onClick={() => setCurrentPage('account')} aria-label="My Account" style={{ background: 'none', color: '#c92c2c', padding: '8px', border: '1px solid #c92c2c', borderRadius: '50px' }}>
+            <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>Account</span>
+          </button>
+
+          {/* Cart */}
+          <button className="cart-btn" onClick={onCartClick} id="cart-toggle" aria-label="Open cart">
+            <ShoppingBag size={16} />
+            <span>Cart</span>
+            {cartCount > 0 && (
+              <span className="cart-badge" aria-label={`${cartCount} items in cart`}>{cartCount}</span>
+            )}
+          </button>
+        </div>
       </div>
     </header>
   );

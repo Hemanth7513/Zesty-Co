@@ -19,6 +19,7 @@ const imageMap: Record<string, string> = {
 interface SauceCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
+  onSelectProduct: (product: Product) => void;
 }
 
 type TabType = 'about' | 'ingredients' | 'pairings';
@@ -32,14 +33,14 @@ const getDietTagClass = (d: string) => {
   return 'veg';
 };
 
-export const SauceCard: React.FC<SauceCardProps> = ({ product, onAddToCart }) => {
+export const SauceCard: React.FC<SauceCardProps> = ({ product, onAddToCart, onSelectProduct }) => {
   const [activeTab, setActiveTab] = useState<TabType>('about');
   const [liked, setLiked] = useState(false);
 
   return (
     <article className="sauce-card">
       {/* ── Image ── */}
-      <div className="sauce-card-image-box">
+      <div className="sauce-card-image-box" onClick={() => onSelectProduct(product)} style={{ cursor: 'pointer' }}>
         <img
           src={imageMap[product.imageName] ?? buffalo_sauce}
           alt={product.name}
@@ -56,7 +57,7 @@ export const SauceCard: React.FC<SauceCardProps> = ({ product, onAddToCart }) =>
       <div className="sauce-card-content">
         {/* Header row */}
         <div className="sauce-card-header">
-          <h3 className="sauce-name">{product.name}</h3>
+          <h3 className="sauce-name" onClick={() => onSelectProduct(product)} style={{ cursor: 'pointer' }}>{product.name}</h3>
           <div className="sauce-price-box">
             <div className="sauce-price">₹{product.price}</div>
             <div className="sauce-price-label">{product.size}</div>

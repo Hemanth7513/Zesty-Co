@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Trash2, MessageCircle, ShoppingBag } from 'lucide-react';
 import type { Product } from '../data/products';
 
@@ -24,6 +24,7 @@ interface OrderDrawerProps {
   cartItems: CartItem[];
   onUpdateQuantity: (id: string, delta: number) => void;
   onRemoveItem: (id: string) => void;
+  clearCart: () => void;
 }
 
 export const OrderDrawer: React.FC<OrderDrawerProps> = ({
@@ -32,31 +33,89 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
   cartItems,
   onUpdateQuantity,
   onRemoveItem,
+  clearCart
 }) => {
   const [name, setName]       = useState('');
-  const [address, setAddress] = useState('');
+  const [mobile, setMobile]   = useState('');
+  const [doorNo, setDoorNo]   = useState('');
+  const [street, setStreet]   = useState('');
+  const [city, setCity]       = useState('');
+  const [pincode, setPincode] = useState('');
   const [notes, setNotes]     = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('UPI');
+
+  // Load saved details on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('zesty_customer_details');
+      if (saved) {
+        const d = JSON.parse(saved);
+        setName(d.name || '');
+        setMobile(d.mobile || '');
+        setDoorNo(d.doorNo || '');
+        setStreet(d.street || '');
+        setCity(d.city || '');
+        setPincode(d.pincode || '');
+        if (d.paymentMethod) setPaymentMethod(d.paymentMethod);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
+  // Save details whenever they change
+  useEffect(() => {
+    const details = { name, mobile, doorNo, street, city, pincode, paymentMethod };
+    localStorage.setItem('zesty_customer_details', JSON.stringify(details));
+  }, [name, mobile, doorNo, street, city, pincode, paymentMethod]);
 
   const subtotal = cartItems.reduce((s, i) => s + i.product.price * i.quantity, 0);
   const delivery = 50;
   const total    = subtotal + delivery;
 
+  // Validation
+  const isValidMobile = /^[6-9]\d{9}$/.test(mobile);
+  const isValidPincode = /^[1-9][0-9]{5}$/.test(pincode);
+
+  const canCheckout = name.trim() && isValidMobile && doorNo.trim() && street.trim() && city.trim() && isValidPincode && paymentMethod;
+
   const handleCheckout = () => {
-    if (cartItems.length === 0) return;
+    if (cartItems.length === 0 || !canCheckout) return;
+
+    // Save to order history
+    try {
+      const saved = localStorage.getItem('zesty_order_history');
+      const history = saved ? JSON.parse(saved) : [];
+      history.unshift({
+        id: Math.random().toString(36).substring(2, 10),
+        date: new Date().toISOString(),
+        total,
+        items: cartItems
+      });
+      localStorage.setItem('zesty_order_history', JSON.stringify(history));
+    } catch (err) {
+      console.error(err);
+    }
 
     let msg = `*NEW ORDER — ZESTY CO.*\n\n`;
     cartItems.forEach((i) => {
       msg += `• *${i.product.name}* (${i.product.size}) × ${i.quantity} — ₹${i.product.price * i.quantity}\n`;
     });
     msg += `\n*Subtotal:* ₹${subtotal}\n*Delivery:* ₹${delivery} (flat D2C)\n*Total:* ₹${total}\n\n`;
-    msg += `*Customer:* ${name}\n*Address:* ${address}`;
+    msg += `*Payment Method:* ${paymentMethod}\n\n`;
+    msg += `*Customer:* ${name}\n*Mobile:* ${mobile}\n*Address:* ${doorNo}, ${street}, ${city} - ${pincode}`;
     if (notes) msg += `\n*Notes:* ${notes}`;
-    msg += `\n\nThank you! Please share payment details.`;
+    
+    if (paymentMethod === 'UPI' || paymentMethod === 'Card / Netbanking') {
+      msg += `\n\nThank you! Please share the payment link/details.`;
+    } else {
+      msg += `\n\nThank you! We will collect ₹${total} via Cash on Delivery.`;
+    }
 
+    clearCart();
+    onClose();
     window.open(`https://wa.me/919876543210?text=${encodeURIComponent(msg)}`, '_blank');
   };
-
-  const canCheckout = name.trim() && address.trim();
 
   return (
     <div className={`overlay ${isOpen ? 'open' : ''}`} onClick={onClose}>
@@ -120,14 +179,60 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Delivery Address *</label>
-                  <textarea
-                    className="form-textarea"
-                    placeholder="Street, Area, City, PIN code"
-                    rows={3}
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                  <label className="form-label">Mobile Number *</label>
+                  <input
+                    type="tel"
+                    className={`form-input ${mobile && !isValidMobile ? 'invalid' : ''}`}
+                    placeholder="10-digit mobile number"
+                    value={mobile}
+                    onChange={(e) => setMobile(e.target.value)}
                   />
+                  {mobile && !isValidMobile && <span style={{ color: '#e63946', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>Please enter a valid 10-digit Indian mobile number.</span>}
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Door No. / Flat No. *</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="e.g. Flat 204 or House No. 12"
+                    value={doorNo}
+                    onChange={(e) => setDoorNo(e.target.value)}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Street / Area *</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="e.g. MG Road, Indiranagar"
+                    value={street}
+                    onChange={(e) => setStreet(e.target.value)}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">City *</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="e.g. Bangalore"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">PIN Code *</label>
+                  <input
+                    type="text"
+                    className={`form-input ${pincode && !isValidPincode ? 'invalid' : ''}`}
+                    placeholder="6-digit PIN code"
+                    value={pincode}
+                    onChange={(e) => setPincode(e.target.value)}
+                  />
+                  {pincode && !isValidPincode && <span style={{ color: '#e63946', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>Please enter a valid 6-digit PIN code.</span>}
                 </div>
 
                 <div className="form-group">
@@ -139,6 +244,23 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                   />
+                </div>
+              </div>
+              <div className="form-section">
+                <h4>Payment Method</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginTop: '1rem' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                    <input type="radio" name="paymentMethod" value="UPI" checked={paymentMethod === 'UPI'} onChange={(e) => setPaymentMethod(e.target.value)} />
+                    UPI (Google Pay, PhonePe)
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                    <input type="radio" name="paymentMethod" value="Card / Netbanking" checked={paymentMethod === 'Card / Netbanking'} onChange={(e) => setPaymentMethod(e.target.value)} />
+                    Card / Netbanking
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                    <input type="radio" name="paymentMethod" value="Cash on Delivery" checked={paymentMethod === 'Cash on Delivery'} onChange={(e) => setPaymentMethod(e.target.value)} />
+                    Cash on Delivery
+                  </label>
                 </div>
               </div>
             </>
@@ -165,13 +287,14 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
               className="whatsapp-btn"
               onClick={handleCheckout}
               disabled={!canCheckout}
+              style={{ opacity: canCheckout ? 1 : 0.6 }}
             >
               <MessageCircle size={20} fill="currentColor" />
               Order via WhatsApp
             </button>
 
             {!canCheckout && (
-              <p className="checkout-hint">Fill in your name and address to unlock checkout.</p>
+              <p className="checkout-hint">Please fill in all valid details above to checkout.</p>
             )}
           </div>
         )}

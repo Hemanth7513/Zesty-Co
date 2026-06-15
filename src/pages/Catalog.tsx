@@ -6,11 +6,12 @@ import { SauceCard } from '../components/SauceCard';
 
 interface CatalogProps {
   onAddToCart: (product: Product) => void;
+  onSelectProduct: (product: Product) => void;
 }
 
 type Filter = 'All' | 'Hot Sauce' | 'Dips & Dressings';
 
-export const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
+export const Catalog: React.FC<CatalogProps> = ({ onAddToCart, onSelectProduct }) => {
   const [query, setQuery]       = useState('');
   const [filter, setFilter]     = useState<Filter>('All');
 
@@ -75,7 +76,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
           ) : (
             <div className="sauces-grid">
               {visible.map((product) => (
-                <SauceCard key={product.id} product={product} onAddToCart={onAddToCart} />
+                <SauceCard key={product.id} product={product} onAddToCart={onAddToCart} onSelectProduct={onSelectProduct} />
               ))}
             </div>
           )}

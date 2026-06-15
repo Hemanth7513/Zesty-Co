@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface FooterProps {
-  setCurrentPage: (page: 'home' | 'catalog' | 'about') => void;
+  setCurrentPage: (page: 'home' | 'catalog' | 'about' | 'contact' | 'product' | 'account') => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
-  const nav = (page: 'home' | 'catalog' | 'about', label: string) => (
+  const nav = (page: 'home' | 'catalog' | 'about' | 'contact', label: string) => (
     <li key={page}>
       <a href={`#${page}`} onClick={(e) => { e.preventDefault(); setCurrentPage(page); }}>
         {label}
@@ -44,6 +44,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
         <div className="footer-col">
           <h4>Get in Touch</h4>
           <ul className="footer-links">
+            <li><a href="#contact" onClick={(e) => { e.preventDefault(); setCurrentPage('contact'); }} style={{ color: 'inherit', textDecoration: 'none' }}>Contact Us</a></li>
             <li>hello@zestyco.in</li>
             <li>+91 98765 43210</li>
           </ul>

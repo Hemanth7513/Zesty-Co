@@ -46,17 +46,7 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => (
             Restaurant-quality flavor — without the nasties.
           </p>
 
-          {/* Only two trust signals — keep it tight */}
-          <div className="hero-stats">
-            <span className="stat-pill">
-              <Leaf size={14} />
-              100% Eggless &amp; Vegetarian
-            </span>
-            <span className="stat-pill">
-              <ShieldCheck size={14} />
-              FSSAI Certified
-            </span>
-          </div>
+
 
           <div className="hero-actions">
             <button className="btn-primary" onClick={() => setCurrentPage('catalog')}>

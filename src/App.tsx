@@ -6,10 +6,13 @@ import { OrderDrawer } from './components/OrderDrawer';
 import { Home } from './pages/Home';
 import { Catalog } from './pages/Catalog';
 import { About } from './pages/About';
+import { Contact } from './pages/Contact';
+import { ProductDetail } from './pages/ProductDetail';
+import { Account } from './pages/Account';
 
 // ── Types ──────────────────────────────────────────────
 
-type Page = 'home' | 'catalog' | 'about';
+type Page = 'home' | 'catalog' | 'about' | 'contact' | 'product' | 'account';
 
 interface CartItem {
   product: Product;
@@ -20,11 +23,26 @@ interface CartItem {
 
 export default function App() {
   const [page, setPage]         = useState<Page>('home');
-  const [cart, setCart]         = useState<CartItem[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  
+  const [cart, setCart]         = useState<CartItem[]>(() => {
+    try {
+      const saved = localStorage.getItem('zesty_cart');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  
   const [drawerOpen, setDrawer] = useState(false);
 
   // Scroll to top whenever the page changes
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [page]);
+
+  // Persist cart
+  useEffect(() => {
+    localStorage.setItem('zesty_cart', JSON.stringify(cart));
+  }, [cart]);
 
   // ── Cart logic ──────────────────────────────────────
 
@@ -38,7 +56,7 @@ export default function App() {
       }
       return [...prev, { product, quantity: 1 }];
     });
-    setDrawer(true);
+    alert(`${product.name} added to cart!`);
   }, []);
 
   const updateQty = useCallback((id: string, delta: number) => {
@@ -68,8 +86,17 @@ export default function App() {
 
       <main>
         {page === 'home'    && <Home    onAddToCart={addToCart} setCurrentPage={setPage} />}
-        {page === 'catalog' && <Catalog onAddToCart={addToCart} />}
+        {page === 'catalog' && <Catalog onAddToCart={addToCart} onSelectProduct={(p) => { setSelectedProduct(p); setPage('product'); }} />}
         {page === 'about'   && <About />}
+        {page === 'contact' && <Contact />}
+        {page === 'account' && <Account />}
+        {page === 'product' && selectedProduct && (
+          <ProductDetail 
+            product={selectedProduct} 
+            onAddToCart={addToCart} 
+            onBack={() => setPage('catalog')} 
+          />
+        )}
       </main>
 
       <Footer setCurrentPage={setPage} />
@@ -80,6 +107,7 @@ export default function App() {
         cartItems={cart}
         onUpdateQuantity={updateQty}
         onRemoveItem={removeItem}
+        clearCart={() => setCart([])}
       />
     </>
   );
