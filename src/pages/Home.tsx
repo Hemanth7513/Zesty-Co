@@ -45,19 +45,11 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => (
             Premium, eggless condiments crafted for the Indian palate.
             Restaurant-quality flavor — without the nasties.
           </p>
-
-
-
-          <div className="hero-actions">
-            <button className="btn-primary" onClick={() => setCurrentPage('catalog')}>
-              Shop Sauces
-              <ArrowRight size={17} />
-            </button>
-            <button className="btn-secondary" onClick={() => setCurrentPage('about')}>
-              Our Story
-            </button>
-          </div>
         </div>
+
+
+
+
 
         {/* Right: Bottle — image speaks for itself, one badge only */}
         <div className="hero-visual">
