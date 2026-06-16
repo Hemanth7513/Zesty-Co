@@ -182,7 +182,7 @@ img { display: block; max-width: 100%; }
 }
 
 .header.scrolled::before {
-  background: rgba(250, 248, 244, 0.92);
+  background: rgba(235, 240, 242, 0.85); /* Cool slate frosted glass */
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 1px 0 rgba(18, 15, 10, 0.06), var(--shadow-sm);
@@ -1600,14 +1600,14 @@ nav { display: flex; justify-content: center; }
 }
 
 .promise-card {
-  background: var(--surface-0);
+  background: #ebf0f2; /* Cool pale slate */
   border-radius: var(--r-xl);
   padding: var(--space-6);
   display: flex;
   gap: var(--space-4);
   align-items: flex-start;
   transition: all var(--t-base) var(--ease-out);
-  border: 1px solid var(--surface-2);
+  border: 1px solid #d4e0e5;
   box-shadow: var(--shadow-sm);
   color: var(--text-900);
 }
@@ -1671,12 +1671,12 @@ nav { display: flex; justify-content: center; }
 
 /* Standard commitment banner */
 .commitment-strip {
-  background: var(--surface-0);
+  background: #ebf0f2; /* Cool pale slate */
   border-radius: var(--r-xl);
   padding: var(--space-10);
   text-align: center;
   margin-top: var(--space-8);
-  border: 1px solid var(--surface-2);
+  border: 1px solid #d4e0e5;
   box-shadow: var(--shadow-md);
 }
 
@@ -2069,7 +2069,7 @@ nav { display: flex; justify-content: center; }
    CONTACT PAGE
    ======================================== */
 .premium-contact-card {
-  background: var(--surface-0);
+  background: #ebf0f2; /* Cool pale slate */
   color: var(--text-900);
   padding: 2.5rem;
   border-radius: 16px;
@@ -2077,7 +2077,7 @@ nav { display: flex; justify-content: center; }
   gap: 1.5rem;
   box-shadow: var(--shadow-sm);
   transition: transform var(--t-fast);
-  border: 1px solid var(--surface-2);
+  border: 1px solid #d4e0e5;
 }
 
 .premium-contact-card:hover {
