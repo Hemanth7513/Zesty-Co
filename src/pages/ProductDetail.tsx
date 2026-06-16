@@ -68,40 +68,48 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCa
               ))}
             </div>
 
-            <p style={{ lineHeight: '1.6', fontSize: '1.1rem' }}>{product.description}</p>
+            <p className="premium-product-desc">{product.description}</p>
 
-            <div>
-              <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <CheckCircle2 size={18} /> Clean Ingredients
+            <div className="premium-detail-section">
+              <h3 className="premium-section-title">
+                <CheckCircle2 size={18} className="brand-icon" /> Clean Ingredients
               </h3>
-              <div className="ingredient-chips" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              <div className="ingredient-chips" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                 {product.ingredients.map((ing, i) => (
                   <span key={i} className="premium-ingredient-chip">{ing}</span>
                 ))}
               </div>
             </div>
 
-            <div>
-              <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Utensils size={18} /> Best Paired With
+            <div className="premium-detail-section">
+              <h3 className="premium-section-title">
+                <Utensils size={18} className="brand-icon" /> Best Paired With
               </h3>
-              <div className="pairing-chips" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              <div className="pairing-chips" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                 {product.pairings.map((p, i) => (
                   <span key={i} className="premium-pairing-chip">{p}</span>
                 ))}
               </div>
             </div>
 
-            <div className="heat-row" style={{ marginTop: '1rem' }}>
-              <span className="heat-label" style={{ fontWeight: 'bold' }}>Heat Level: {product.heatLevel}/5</span>
-              <div className="heat-dots" style={{ display: 'flex', gap: '4px', marginTop: '8px' }}>
-                {HEAT_CLASSES.map((cls, i) => (
-                  <div
-                    key={i}
-                    className={`heat-dot ${cls} ${i < product.heatLevel ? 'active' : ''}`}
-                    style={{ width: '12px', height: '12px', borderRadius: '50%', background: i < product.heatLevel ? '#ff5722' : '#eee' }}
-                  />
-                ))}
+            <div className="premium-detail-section heat-row">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span className="premium-section-title" style={{ marginBottom: 0 }}>Heat Level: {product.heatLevel}/5</span>
+                <div className="heat-dots" style={{ display: 'flex', gap: '6px' }}>
+                  {HEAT_CLASSES.map((cls, i) => (
+                    <div
+                      key={i}
+                      className={`heat-dot ${cls} ${i < product.heatLevel ? 'active' : ''}`}
+                      style={{ 
+                        width: '14px', 
+                        height: '14px', 
+                        borderRadius: '50%', 
+                        background: i < product.heatLevel ? 'var(--brand)' : 'var(--surface-2)',
+                        transition: 'background var(--t-fast)'
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
 

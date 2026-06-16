@@ -2004,3 +2004,39 @@ nav { display: flex; justify-content: center; }
   color: white;
   border-color: var(--text-900);
 }
+
+/* ========================================
+   PRODUCT DETAIL LAYOUT
+   ======================================== */
+.premium-product-desc {
+  line-height: 1.7;
+  font-size: 1.15rem;
+  color: var(--text-600);
+  margin-bottom: var(--space-8);
+  border-left: 3px solid var(--brand);
+  padding-left: var(--space-4);
+  font-style: italic;
+}
+
+.premium-detail-section {
+  margin-bottom: var(--space-10);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--surface-2);
+}
+
+.premium-section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-900);
+}
+
+.brand-icon {
+  color: var(--brand);
+}
