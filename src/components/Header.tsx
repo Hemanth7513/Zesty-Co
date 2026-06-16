@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, Menu, X } from 'lucide-react';
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
 
 interface HeaderProps {
   cartCount: number;
   onCartClick: () => void;
   currentPage: 'home' | 'catalog' | 'about' | 'contact' | 'product' | 'account';
   setCurrentPage: (page: 'home' | 'catalog' | 'about' | 'contact' | 'product' | 'account') => void;
-  user: any;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -14,9 +14,9 @@ export const Header: React.FC<HeaderProps> = ({
   onCartClick,
   currentPage,
   setCurrentPage,
-  user,
 }) => {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -24,12 +24,17 @@ export const Header: React.FC<HeaderProps> = ({
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const handleNavClick = (page: 'home' | 'catalog' | 'about' | 'contact') => {
+    setCurrentPage(page);
+    setMobileMenuOpen(false);
+  };
+
   const nav = (page: 'home' | 'catalog' | 'about' | 'contact', label: string) => (
     <li key={page}>
       <a
         href={`#${page}`}
         className={currentPage === page ? 'active' : ''}
-        onClick={(e) => { e.preventDefault(); setCurrentPage(page); }}
+        onClick={(e) => { e.preventDefault(); handleNavClick(page); }}
       >
         {label}
       </a>
@@ -39,6 +44,11 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       <div className="container header-container">
+        
+        {/* Mobile Menu Toggle */}
+        <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle menu">
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
 
         {/* Premium wordmark logo — no icon, just refined type */}
         <a
@@ -77,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
         </a>
 
         {/* Nav */}
-        <nav aria-label="Main navigation">
+        <nav aria-label="Main navigation" className={`main-nav ${mobileMenuOpen ? 'open' : ''}`}>
           <ul className="nav-links">
             {nav('home', 'Home')}
             {nav('catalog', 'Our Sauces')}
@@ -86,16 +96,28 @@ export const Header: React.FC<HeaderProps> = ({
           </ul>
         </nav>
 
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          {/* Account */}
-          <button className="cart-btn" onClick={() => setCurrentPage('account')} aria-label="My Account" style={{ background: 'none', color: '#c92c2c', padding: '8px 12px', border: '1px solid #c92c2c', borderRadius: '50px', cursor: 'pointer' }}>
-            <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>{user ? `Hi, ${user.name.split(' ')[0]}` : 'Sign In'}</span>
-          </button>
+        <div className="header-actions">
+          {/* Clerk Account Integration */}
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button className="cart-btn" aria-label="Sign In" style={{ background: 'none', color: '#c92c2c', padding: '8px 12px', border: '1px solid #c92c2c', borderRadius: '50px', cursor: 'pointer' }}>
+                <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>Sign In</span>
+              </button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <div className="account-controls" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <button onClick={() => setCurrentPage('account')} style={{ background: 'none', border: 'none', color: '#666', fontSize: '0.9rem', fontWeight: 'bold', cursor: 'pointer', padding: '4px 8px' }}>
+                Orders
+              </button>
+              <UserButton appearance={{ elements: { userButtonAvatarBox: { width: 32, height: 32 } } }} />
+            </div>
+          </SignedIn>
 
           {/* Cart */}
           <button className="cart-btn" onClick={onCartClick} id="cart-toggle" aria-label="Open cart">
             <ShoppingBag size={16} />
-            <span>Cart</span>
+            <span className="cart-label">Cart</span>
             {cartCount > 0 && (
               <span className="cart-badge" aria-label={`${cartCount} items in cart`}>{cartCount}</span>
             )}

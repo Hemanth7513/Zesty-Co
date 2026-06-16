@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ShoppingCart, Heart, Utensils, CheckCircle2 } from 'lucide-react';
 import type { Product } from '../data/products';
-
+import { motion } from 'framer-motion';
 import buffalo_sauce from '../assets/buffalo_sauce.png';
 import chipotle_ranch from '../assets/chipotle_ranch.png';
 import golden_dip from '../assets/golden_dip.png';
@@ -140,10 +140,15 @@ export const SauceCard: React.FC<SauceCardProps> = ({ product, onAddToCart, onSe
             >
               <Heart size={16} fill={liked ? 'currentColor' : 'none'} />
             </button>
-            <button className="add-btn" onClick={() => onAddToCart(product)}>
+            <motion.button 
+              whileHover={{ scale: 1.05 }} 
+              whileTap={{ scale: 0.95 }} 
+              className="add-btn" 
+              onClick={() => onAddToCart(product)}
+            >
               <ShoppingCart size={15} />
               Add to Cart
-            </button>
+            </motion.button>
           </div>
         </div>
       </div>

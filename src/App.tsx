@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import type { Product } from './data/products';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -19,16 +20,6 @@ interface CartItem {
   quantity: number;
 }
 
-export interface User {
-  name: string;
-  mobile: string;
-  email: string;
-  doorNo?: string;
-  street?: string;
-  city?: string;
-  pincode?: string;
-}
-
 // ── App ────────────────────────────────────────────────
 
 export default function App() {
@@ -43,33 +34,16 @@ export default function App() {
       return [];
     }
   });
-
-  const [user, setUser] = useState<User | null>(() => {
-    try {
-      const saved = localStorage.getItem('zesty_user');
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
-  });
   
   const [drawerOpen, setDrawer] = useState(false);
 
   // Scroll to top whenever the page changes
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [page]);
 
-  // Persist cart and user
+  // Persist cart
   useEffect(() => {
     localStorage.setItem('zesty_cart', JSON.stringify(cart));
   }, [cart]);
-
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem('zesty_user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('zesty_user');
-    }
-  }, [user]);
 
   // ── Cart logic ──────────────────────────────────────
 
@@ -109,22 +83,24 @@ export default function App() {
         onCartClick={() => setDrawer(true)}
         currentPage={page}
         setCurrentPage={setPage}
-        user={user}
       />
 
-      <main>
-        {page === 'home'    && <Home    onAddToCart={addToCart} setCurrentPage={setPage} />}
-        {page === 'catalog' && <Catalog onAddToCart={addToCart} onSelectProduct={(p) => { setSelectedProduct(p); setPage('product'); }} />}
-        {page === 'about'   && <About />}
-        {page === 'contact' && <Contact />}
-        {page === 'account' && <Account user={user} setUser={setUser} />}
-        {page === 'product' && selectedProduct && (
-          <ProductDetail 
-            product={selectedProduct} 
-            onAddToCart={addToCart} 
-            onBack={() => setPage('catalog')} 
-          />
-        )}
+      <main style={{ overflowX: 'hidden' }}>
+        <AnimatePresence mode="wait">
+          {page === 'home'    && <Home    key="home"    onAddToCart={addToCart} setCurrentPage={setPage} />}
+          {page === 'catalog' && <Catalog key="catalog" onAddToCart={addToCart} onSelectProduct={(p) => { setSelectedProduct(p); setPage('product'); }} />}
+          {page === 'about'   && <About   key="about"   />}
+          {page === 'contact' && <Contact key="contact" />}
+          {page === 'account' && <Account key="account" />}
+          {page === 'product' && selectedProduct && (
+            <ProductDetail 
+              key="product"
+              product={selectedProduct} 
+              onAddToCart={addToCart} 
+              onBack={() => setPage('catalog')} 
+            />
+          )}
+        </AnimatePresence>
       </main>
 
       <Footer setCurrentPage={setPage} />
@@ -136,8 +112,6 @@ export default function App() {
         onUpdateQuantity={updateQty}
         onRemoveItem={removeItem}
         clearCart={() => setCart([])}
-        user={user}
-        setUser={setUser}
       />
     </>
   );

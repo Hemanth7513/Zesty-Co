@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Trash2, MessageCircle, ShoppingBag } from 'lucide-react';
+import { useUser } from '@clerk/clerk-react';
 import type { Product } from '../data/products';
 
 import buffalo_sauce from '../assets/buffalo_sauce.png';
@@ -25,8 +26,6 @@ interface OrderDrawerProps {
   onUpdateQuantity: (id: string, delta: number) => void;
   onRemoveItem: (id: string) => void;
   clearCart: () => void;
-  user: any;
-  setUser: (user: any) => void;
 }
 
 export const OrderDrawer: React.FC<OrderDrawerProps> = ({
@@ -35,10 +34,10 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
   cartItems,
   onUpdateQuantity,
   onRemoveItem,
-  clearCart,
-  user,
-  setUser
+  clearCart
 }) => {
+  const { user: clerkUser } = useUser();
+  
   const [name, setName]       = useState('');
   const [mobile, setMobile]   = useState('');
   const [doorNo, setDoorNo]   = useState('');
@@ -48,39 +47,39 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
   const [notes, setNotes]     = useState('');
   const [paymentMethod, setPaymentMethod] = useState('UPI');
 
+  const storageKey = clerkUser ? `zesty_customer_details_${clerkUser.id}` : 'zesty_customer_details';
+
   // Load saved details on mount or user change
   useEffect(() => {
-    if (user) {
-      setName(user.name || '');
-      setMobile(user.mobile || '');
-      setDoorNo(user.doorNo || '');
-      setStreet(user.street || '');
-      setCity(user.city || '');
-      setPincode(user.pincode || '');
-    } else {
-      try {
-        const saved = localStorage.getItem('zesty_customer_details');
-        if (saved) {
-          const d = JSON.parse(saved);
-          setName(d.name || '');
-          setMobile(d.mobile || '');
-          setDoorNo(d.doorNo || '');
-          setStreet(d.street || '');
-          setCity(d.city || '');
-          setPincode(d.pincode || '');
-          if (d.paymentMethod) setPaymentMethod(d.paymentMethod);
-        }
-      } catch (err) {
-        console.error(err);
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        const d = JSON.parse(saved);
+        setName(d.name || clerkUser?.fullName || '');
+        setMobile(d.mobile || '');
+        setDoorNo(d.doorNo || '');
+        setStreet(d.street || '');
+        setCity(d.city || '');
+        setPincode(d.pincode || '');
+        if (d.paymentMethod) setPaymentMethod(d.paymentMethod);
+      } else if (clerkUser) {
+        setName(clerkUser.fullName || '');
+        setMobile('');
+        setDoorNo('');
+        setStreet('');
+        setCity('');
+        setPincode('');
       }
+    } catch (err) {
+      console.error(err);
     }
-  }, [user]);
+  }, [clerkUser, storageKey]);
 
   // Save details whenever they change
   useEffect(() => {
     const details = { name, mobile, doorNo, street, city, pincode, paymentMethod };
-    localStorage.setItem('zesty_customer_details', JSON.stringify(details));
-  }, [name, mobile, doorNo, street, city, pincode, paymentMethod]);
+    localStorage.setItem(storageKey, JSON.stringify(details));
+  }, [name, mobile, doorNo, street, city, pincode, paymentMethod, storageKey]);
 
   const subtotal = cartItems.reduce((s, i) => s + i.product.price * i.quantity, 0);
   const delivery = 50;
@@ -97,7 +96,8 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
 
     // Save to order history
     try {
-      const saved = localStorage.getItem('zesty_order_history');
+      const historyKey = clerkUser ? `zesty_order_history_${clerkUser.id}` : 'zesty_order_history';
+      const saved = localStorage.getItem(historyKey);
       const history = saved ? JSON.parse(saved) : [];
       history.unshift({
         id: Math.random().toString(36).substring(2, 10),
@@ -105,12 +105,7 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
         total,
         items: cartItems
       });
-      localStorage.setItem('zesty_order_history', JSON.stringify(history));
-      
-      // Update user profile with address
-      if (user) {
-        setUser({ ...user, name, mobile, doorNo, street, city, pincode });
-      }
+      localStorage.setItem(historyKey, JSON.stringify(history));
     } catch (err) {
       console.error(err);
     }
