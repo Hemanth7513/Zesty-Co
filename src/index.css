@@ -176,16 +176,18 @@ img { display: block; max-width: 100%; }
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(250, 248, 244, 0);
-  backdrop-filter: blur(0px);
+  background: rgba(244, 240, 232, 0.95); /* Constant buttercream background */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 rgba(18, 15, 10, 0.05);
   transition: all var(--t-slow) var(--ease-out);
 }
 
 .header.scrolled::before {
-  background: rgba(235, 240, 242, 0.85); /* Cool slate frosted glass */
+  background: rgba(244, 240, 232, 0.98); 
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 1px 0 rgba(18, 15, 10, 0.06), var(--shadow-sm);
+  box-shadow: 0 4px 20px rgba(18, 15, 10, 0.08), var(--shadow-sm);
 }
 
 .header-container {
@@ -1600,14 +1602,14 @@ nav { display: flex; justify-content: center; }
 }
 
 .promise-card {
-  background: #ebf0f2; /* Cool pale slate */
+  background: var(--surface-1); /* Warm buttercream */
   border-radius: var(--r-xl);
   padding: var(--space-6);
   display: flex;
   gap: var(--space-4);
   align-items: flex-start;
   transition: all var(--t-base) var(--ease-out);
-  border: 1px solid #d4e0e5;
+  border: 1px solid var(--surface-3);
   box-shadow: var(--shadow-sm);
   color: var(--text-900);
 }
@@ -1671,12 +1673,12 @@ nav { display: flex; justify-content: center; }
 
 /* Standard commitment banner */
 .commitment-strip {
-  background: #ebf0f2; /* Cool pale slate */
+  background: var(--surface-1); /* Warm buttercream */
   border-radius: var(--r-xl);
   padding: var(--space-10);
   text-align: center;
   margin-top: var(--space-8);
-  border: 1px solid #d4e0e5;
+  border: 1px solid var(--surface-3);
   box-shadow: var(--shadow-md);
 }
 
@@ -2069,7 +2071,7 @@ nav { display: flex; justify-content: center; }
    CONTACT PAGE
    ======================================== */
 .premium-contact-card {
-  background: #ebf0f2; /* Cool pale slate */
+  background: var(--surface-1); /* Warm buttercream */
   color: var(--text-900);
   padding: 2.5rem;
   border-radius: 16px;
@@ -2077,7 +2079,7 @@ nav { display: flex; justify-content: center; }
   gap: 1.5rem;
   box-shadow: var(--shadow-sm);
   transition: transform var(--t-fast);
-  border: 1px solid #d4e0e5;
+  border: 1px solid var(--surface-3);
 }
 
 .premium-contact-card:hover {
