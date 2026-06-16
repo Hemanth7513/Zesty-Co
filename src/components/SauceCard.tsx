@@ -24,25 +24,20 @@ interface SauceCardProps {
 
 export const SauceCard: React.FC<SauceCardProps> = ({ product, onAddToCart, onSelectProduct }) => {
   const [liked, setLiked] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.article 
       className="sauce-card-minimal"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       {/* ── Image Area ── */}
       <div className="card-minimal-image" onClick={() => onSelectProduct(product)}>
-        <motion.img
+        <img
           src={imageMap[product.imageName] ?? buffalo_sauce}
           alt={product.name}
           className="card-minimal-img"
-          animate={{ scale: isHovered ? 1.05 : 1 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
           loading="lazy"
         />
         
@@ -55,35 +50,39 @@ export const SauceCard: React.FC<SauceCardProps> = ({ product, onAddToCart, onSe
           </div>
         </div>
 
-        {/* Wishlist Heart Overlay */}
-        <button
-          className={`minimal-wishlist-btn ${liked ? 'liked' : ''}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            setLiked(!liked);
-          }}
-          title={liked ? 'Remove from wishlist' : 'Add to wishlist'}
-        >
-          <Heart size={18} fill={liked ? 'currentColor' : 'none'} />
-        </button>
+        {/* Hover Action Overlay */}
+        <div className="hover-action-overlay">
+          <button
+            className={`minimal-wishlist-btn ${liked ? 'liked' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setLiked(!liked);
+            }}
+            title={liked ? 'Remove from wishlist' : 'Add to wishlist'}
+          >
+            <Heart size={18} fill={liked ? 'currentColor' : 'none'} />
+          </button>
+
+          <button 
+            className="minimal-add-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddToCart(product);
+            }}
+          >
+            <span>ADD TO CART</span>
+            <ShoppingCart size={16} />
+          </button>
+        </div>
       </div>
 
       {/* ── Content Area ── */}
       <div className="card-minimal-content">
-        <p className="minimal-size">{product.size}</p>
         <h3 className="minimal-title" onClick={() => onSelectProduct(product)}>{product.name}</h3>
-        <p className="minimal-price">₹{product.price}</p>
-        
-        {/* Quick Add Button */}
-        <motion.button 
-          className="minimal-add-btn"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => onAddToCart(product)}
-        >
-          <span>Add to Cart</span>
-          <ShoppingCart size={16} />
-        </motion.button>
+        <p className="minimal-reviews">★★★★★ <span>12 Reviews</span></p>
+        <p className="minimal-price">
+          Rs. {product.price} <span className="minimal-size">({product.size})</span>
+        </p>
       </div>
     </motion.article>
   );

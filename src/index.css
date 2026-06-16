@@ -805,12 +805,19 @@ nav { display: flex; justify-content: center; }
 }
 
 /* ========================================
-   SAUCE CARD (MINIMALIST REDESIGN)
+   SAUCE CARD (KITCHEN SECRET REWORK)
    ======================================== */
 .sauces-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: var(--space-12) var(--space-8);
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Force large columns */
+  gap: var(--space-12); /* Massive gap */
+}
+
+@media (max-width: 768px) {
+  .sauces-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-10);
+  }
 }
 
 .sauce-card-minimal {
@@ -826,28 +833,31 @@ nav { display: flex; justify-content: center; }
   position: relative;
   width: 100%;
   aspect-ratio: 4/5;
-  background: #f7f5f0;
-  border-radius: var(--r-xl);
+  background: transparent; /* No container background */
   overflow: hidden;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-4);
+  margin-bottom: var(--space-4);
 }
 
 .card-minimal-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.15));
+  transition: transform 0.6s var(--ease-out);
+}
+
+.card-minimal-image:hover .card-minimal-img {
+  transform: scale(1.05);
 }
 
 /* Badges */
 .card-minimal-badges {
   position: absolute;
-  top: var(--space-4);
-  left: var(--space-4);
+  top: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -856,30 +866,28 @@ nav { display: flex; justify-content: center; }
 
 .minimal-badge {
   font-family: var(--font-display);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 4px 10px;
-  border-radius: var(--r-sm);
-  background: white;
-  color: var(--text-900);
-  box-shadow: var(--shadow-sm);
+  background: var(--text-900);
+  color: white;
+  border-radius: 0; /* Sharp edges */
 }
 
-.minimal-badge.hit { color: var(--brand); }
-.minimal-badge.new { color: #16a34a; }
+.minimal-badge.hit { background: var(--brand); }
+.minimal-badge.new { background: #16a34a; }
 
 .fssai-badge-minimal {
   width: 24px;
   height: 24px;
   background: white;
-  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-sm);
-  border: 1.5px solid var(--green-100);
+  border: 1px solid var(--green-100);
+  margin-top: var(--space-2);
 }
 
 .fssai-dot-minimal {
@@ -889,87 +897,126 @@ nav { display: flex; justify-content: center; }
   background: var(--green-500);
 }
 
-.minimal-wishlist-btn {
+/* Hover Action Overlay */
+.hover-action-overlay {
   position: absolute;
-  top: var(--space-4);
-  right: var(--space-4);
-  width: 36px;
-  height: 36px;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-2);
+  z-index: 10;
+}
+
+.minimal-wishlist-btn {
+  align-self: flex-end;
+  pointer-events: auto;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: white;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-300);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
   transition: all var(--t-fast) var(--ease-out);
-  z-index: 2;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.card-minimal-image:hover .minimal-wishlist-btn {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .minimal-wishlist-btn:hover {
-  transform: scale(1.1);
+  transform: scale(1.1) !important;
   color: var(--brand);
 }
-.minimal-wishlist-btn.liked { color: var(--brand); }
+.minimal-wishlist-btn.liked { 
+  opacity: 1;
+  color: var(--brand); 
+}
+
+.minimal-add-btn {
+  pointer-events: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: white;
+  color: var(--text-900);
+  border: 1px solid var(--text-900);
+  padding: 14px;
+  border-radius: 0; /* Sharp button */
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: all var(--t-base) var(--ease-out);
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.card-minimal-image:hover .minimal-add-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.minimal-add-btn:hover {
+  background: var(--text-900);
+  color: white;
+}
 
 /* Content Area */
 .card-minimal-content {
-  padding: var(--space-5) 0 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.minimal-size {
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-300);
-  margin-bottom: var(--space-1);
+  align-items: flex-start; /* Left aligned */
+  text-align: left;
 }
 
 .minimal-title {
-  font-family: var(--font-serif);
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-family: var(--font-display); /* Switch to sans-serif for clean look */
+  font-size: 1.25rem;
+  font-weight: 400; /* Lighter weight */
   color: var(--text-900);
-  line-height: 1.2;
-  margin-bottom: var(--space-2);
+  line-height: 1.3;
+  margin-bottom: var(--space-1);
   cursor: pointer;
   transition: color var(--t-fast);
 }
 
 .minimal-title:hover { color: var(--brand); }
 
+.minimal-reviews {
+  font-size: 0.8rem;
+  color: #fbbf24; /* Star color */
+  margin-bottom: var(--space-2);
+}
+
+.minimal-reviews span {
+  color: var(--text-300);
+  margin-left: 4px;
+}
+
 .minimal-price {
   font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--brand);
-  margin-bottom: var(--space-4);
-}
-
-.minimal-add-btn {
-  width: 100%;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-900); /* Darker price, not brand colored */
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: var(--space-2);
-  background: transparent;
-  color: var(--text-900);
-  border: 1.5px solid var(--text-900);
-  padding: 12px;
-  border-radius: var(--r-full);
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 700;
-  transition: all var(--t-base) var(--ease-out);
 }
 
-.minimal-add-btn:hover {
-  background: var(--text-900);
-  color: white;
+.minimal-size {
+  font-weight: 400;
+  color: var(--text-300);
+  font-size: 0.85rem;
 }
 
 /* ========================================
