@@ -1,21 +1,18 @@
 import React from 'react';
 import type { Product } from '../data/products';
-import { products } from '../data/products';
 import buffalo_sauce from '../assets/buffalo_sauce.png';
 import { PageTransition } from '../components/PageTransition';
-import { SauceCard } from '../components/SauceCard';
 import { motion } from 'framer-motion';
 
 interface HomeProps {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onAddToCart: (product: Product) => void;
   setCurrentPage: (page: 'home' | 'catalog' | 'about') => void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onSelectProduct: (product: Product) => void;
 }
 
-export const Home: React.FC<HomeProps> = ({ onAddToCart, setCurrentPage, onSelectProduct }) => {
-  // Grab top 3 best sellers for the featured section
-  const featuredProducts = products.filter(p => p.type === 'Best Seller').slice(0, 3);
-
+export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
   return (
     <PageTransition>
       <div className="page-wrapper">
@@ -81,29 +78,6 @@ export const Home: React.FC<HomeProps> = ({ onAddToCart, setCurrentPage, onSelec
               </motion.div>
             </div>
 
-          </div>
-        </section>
-
-        {/* ── FEATURED FAVORITES ── */}
-        <section className="featured-section">
-          <div className="container">
-            <div className="featured-header">
-              <h2 className="section-title">Featured Favorites</h2>
-              <button className="view-all-link" onClick={() => setCurrentPage('catalog')}>
-                View All Sauces →
-              </button>
-            </div>
-            
-            <div className="sauces-grid">
-              {featuredProducts.map((product) => (
-                <SauceCard 
-                  key={product.id} 
-                  product={product} 
-                  onAddToCart={onAddToCart} 
-                  onSelectProduct={onSelectProduct} 
-                />
-              ))}
-            </div>
           </div>
         </section>
 
