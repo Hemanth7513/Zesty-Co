@@ -249,6 +249,13 @@ nav { display: flex; justify-content: center; }
   background: rgba(201, 44, 44, 0.08);
 }
 
+/* Header Actions (Sign in, Cart) */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 /* Cart */
 .cart-btn {
   display: flex;
