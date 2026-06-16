@@ -1904,3 +1904,51 @@ nav { display: flex; justify-content: center; }
   letter-spacing: 0.02em;
   margin: 0;
 }
+
+/* ========================================
+   PRODUCT DETAIL BUTTONS
+   ======================================== */
+.premium-back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-500);
+  margin-bottom: var(--space-10);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color var(--t-fast);
+}
+
+.premium-back-btn:hover {
+  color: var(--brand);
+}
+
+.premium-detail-add-btn {
+  margin-top: var(--space-8);
+  padding: var(--space-4);
+  font-size: 1.1rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--text-900);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3);
+  transition: background var(--t-fast);
+  width: 100%;
+}
+
+.premium-detail-add-btn:hover {
+  background: var(--brand);
+}

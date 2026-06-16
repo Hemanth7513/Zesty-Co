@@ -33,9 +33,9 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCa
 
   return (
     <PageTransition>
-      <div className="container" style={{ padding: '2rem 1rem', maxWidth: '1000px', margin: '0 auto' }}>
-        <button onClick={onBack} className="back-btn" style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#666', marginBottom: '2rem' }}>
-          <ArrowLeft size={20} /> Back to Catalog
+      <div className="container" style={{ padding: '2rem 1rem', maxWidth: '1000px', margin: '0 auto', position: 'relative' }}>
+        <button onClick={onBack} className="premium-back-btn">
+          <ArrowLeft size={18} /> Back to Collection
         </button>
 
         <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap' }}>
@@ -106,8 +106,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCa
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.95 }}
-              className="add-btn"
-              style={{ marginTop: '2rem', padding: '1rem', fontSize: '1.2rem', background: '#e63946', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}
+              className="premium-detail-add-btn"
               onClick={() => onAddToCart(product)}
             >
               <ShoppingCart size={20} /> Add to Cart — ₹{product.price}
