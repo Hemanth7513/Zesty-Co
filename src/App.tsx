@@ -87,7 +87,7 @@ export default function App() {
 
       <main style={{ overflowX: 'hidden' }}>
         <AnimatePresence mode="wait">
-          {page === 'home'    && <Home    key="home"    onAddToCart={addToCart} setCurrentPage={setPage} />}
+          {page === 'home'    && <Home    key="home"    onAddToCart={addToCart} setCurrentPage={setPage} onSelectProduct={(p) => { setSelectedProduct(p); setPage('product'); }} />}
           {page === 'catalog' && <Catalog key="catalog" onAddToCart={addToCart} onSelectProduct={(p) => { setSelectedProduct(p); setPage('product'); }} />}
           {page === 'about'   && <About   key="about"   />}
           {page === 'contact' && <Contact key="contact" />}
