@@ -4,6 +4,7 @@ import type { Product } from './data/products';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { OrderDrawer } from './components/OrderDrawer';
+import { Toast } from './components/Toast';
 import { Home } from './pages/Home';
 import { Catalog } from './pages/Catalog';
 import { About } from './pages/About';
@@ -25,6 +26,7 @@ interface CartItem {
 export default function App() {
   const [page, setPage]         = useState<Page>('home');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   
   const [cart, setCart]         = useState<CartItem[]>(() => {
     try {
@@ -57,7 +59,7 @@ export default function App() {
       }
       return [...prev, { product, quantity: 1 }];
     });
-    alert(`${product.name} added to cart!`);
+    setToastMessage(`${product.name} added to cart!`);
   }, []);
 
   const updateQty = useCallback((id: string, delta: number) => {
@@ -113,6 +115,8 @@ export default function App() {
         onRemoveItem={removeItem}
         clearCart={() => setCart([])}
       />
+
+      <Toast message={toastMessage} onClose={() => setToastMessage(null)} />
     </>
   );
 }
