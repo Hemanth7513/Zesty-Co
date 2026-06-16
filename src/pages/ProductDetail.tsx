@@ -62,7 +62,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCa
 
             <div className="diet-tags">
               {product.dietary.map((d) => (
-                <span key={d} className="diet-tag" style={{ background: '#e0f7fa', color: '#006064', padding: '4px 12px', borderRadius: '20px', fontSize: '0.9rem', marginRight: '8px' }}>
+                <span key={d} className="premium-diet-tag">
                   {d}
                 </span>
               ))}
@@ -76,7 +76,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCa
               </h3>
               <div className="ingredient-chips" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                 {product.ingredients.map((ing, i) => (
-                  <span key={i} className="ingredient-chip" style={{ background: '#f0f0f0', padding: '6px 12px', borderRadius: '6px', fontSize: '0.9rem' }}>{ing}</span>
+                  <span key={i} className="premium-ingredient-chip">{ing}</span>
                 ))}
               </div>
             </div>
@@ -87,7 +87,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCa
               </h3>
               <div className="pairing-chips" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                 {product.pairings.map((p, i) => (
-                  <span key={i} className="pairing-chip" style={{ border: '1px solid #ddd', padding: '6px 12px', borderRadius: '6px', fontSize: '0.9rem' }}>{p}</span>
+                  <span key={i} className="premium-pairing-chip">{p}</span>
                 ))}
               </div>
             </div>
