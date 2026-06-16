@@ -34,17 +34,18 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCa
   return (
     <PageTransition>
       <div className="container" style={{ padding: '2rem 1rem', maxWidth: '1000px', margin: '0 auto', position: 'relative' }}>
-        <button onClick={onBack} className="premium-back-btn">
-          <ArrowLeft size={18} /> Back to Collection
-        </button>
-
         <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap' }}>
-          <div style={{ flex: '1 1 400px', background: '#f8f8f8', borderRadius: '16px', padding: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img
-              src={imageMap[product.imageName] ?? buffalo_sauce}
-              alt={product.name}
-              style={{ maxWidth: '100%', height: 'auto', maxHeight: '500px' }}
-            />
+          <div style={{ flex: '1 1 400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <button onClick={onBack} className="premium-back-btn" style={{ marginBottom: '1rem', alignSelf: 'flex-start' }}>
+              <ArrowLeft size={18} /> Back to Collection
+            </button>
+            <div style={{ background: '#f8f8f8', borderRadius: '16px', padding: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
+              <img
+                src={imageMap[product.imageName] ?? buffalo_sauce}
+                alt={product.name}
+                style={{ maxWidth: '100%', height: 'auto', maxHeight: '500px' }}
+              />
+            </div>
           </div>
 
           <div style={{ flex: '1 1 400px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
