@@ -95,6 +95,17 @@ html {
 
 body { overflow-x: hidden; }
 
+/* GLOBAL NOISE GRAIN EFFECT */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 9999;
+}
+
 /* ── Typography ── */
 h1, h2, h3 {
   font-family: var(--font-serif);
@@ -1607,24 +1618,26 @@ nav { display: flex; justify-content: center; }
 
 .promise-icon {
   width: 38px;
-  height: 38px;
-  border-radius: var(--r-sm);
-  background: rgba(201, 44, 44, 0.08);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-md);
+  background: rgba(201,44,44,0.1);
+  color: var(--brand);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--brand);
   flex-shrink: 0;
 }
 
 .promise-card h4 {
-  font-size: 0.9rem;
-  font-weight: 800;
-  margin-bottom: var(--space-1);
-  color: var(--text-900);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: white;
 }
 
-.promise-card p { font-size: 0.8rem; color: var(--text-300); line-height: 1.5; }
+.promise-card p { font-size: 0.9rem; color: var(--text-400); line-height: 1.6; }
 
 .about-visual {
   position: relative;
@@ -1657,20 +1670,27 @@ nav { display: flex; justify-content: center; }
 
 /* Standard commitment banner */
 .commitment-strip {
-  background: var(--surface-1);
+  background: var(--text-900);
   border-radius: var(--r-xl);
   padding: var(--space-10);
   text-align: center;
   margin-top: var(--space-8);
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+.commitment-strip .section-label {
+  color: var(--brand);
 }
 
 .commitment-strip h2 {
   font-size: 2.2rem;
   margin-bottom: var(--space-4);
+  color: white;
 }
 
 .commitment-strip p {
-  color: var(--text-500);
+  color: var(--text-400);
   max-width: 700px;
   margin: 0 auto var(--space-8);
   font-size: 1.05rem;
@@ -2041,4 +2061,116 @@ nav { display: flex; justify-content: center; }
 
 .brand-icon {
   color: var(--brand);
+}
+
+/* ========================================
+   CONTACT PAGE
+   ======================================== */
+.premium-contact-card {
+  background: var(--text-900);
+  color: var(--surface-0);
+  padding: 2.5rem;
+  border-radius: 16px;
+  display: flex;
+  gap: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  transition: transform var(--t-fast);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.premium-contact-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.15);
+}
+
+.premium-contact-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: white;
+}
+
+.premium-contact-card p {
+  color: var(--text-400);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.contact-card-icon {
+  color: var(--brand);
+  flex-shrink: 0;
+}
+
+.contact-link {
+  color: var(--brand);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color var(--t-fast);
+}
+
+.contact-link:hover {
+  color: white;
+}
+
+.premium-contact-form-container {
+  background: white;
+  padding: 3rem;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+}
+
+/* Floating Label Inputs */
+.form-group-float {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.form-group-float input,
+.form-group-float textarea,
+.form-group-float select {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--surface-2);
+  padding: 1rem 0 0.5rem 0;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text-900);
+  outline: none;
+  transition: border-color var(--t-fast);
+}
+
+.form-group-float textarea {
+  resize: vertical;
+}
+
+.form-group-float label {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  color: var(--text-500);
+  font-size: 1rem;
+  pointer-events: none;
+  transition: all 0.2s ease-out;
+}
+
+.form-group-float input:focus,
+.form-group-float textarea:focus,
+.form-group-float select:focus {
+  border-bottom-color: var(--brand);
+}
+
+.form-group-float input:focus ~ label,
+.form-group-float input:not(:placeholder-shown) ~ label,
+.form-group-float textarea:focus ~ label,
+.form-group-float textarea:not(:placeholder-shown) ~ label,
+.form-group-float select:valid ~ .select-label,
+.form-group-float select:focus ~ .select-label {
+  top: -10px;
+  font-size: 0.8rem;
+  color: var(--brand);
+  font-weight: 600;
 }
