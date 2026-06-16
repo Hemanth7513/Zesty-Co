@@ -3,16 +3,15 @@ import type { Product } from '../data/products';
 import buffalo_sauce from '../assets/buffalo_sauce.png';
 import { PageTransition } from '../components/PageTransition';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 interface HomeProps {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onAddToCart: (product: Product) => void;
-  setCurrentPage: (page: 'home' | 'catalog' | 'about') => void;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onSelectProduct: (product: Product) => void;
 }
 
-export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
+export const Home: React.FC<HomeProps> = () => {
+  const navigate = useNavigate();
   return (
     <PageTransition>
       <div className="page-wrapper">
@@ -52,7 +51,7 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
 
               <motion.button 
                 className="shop-now-btn"
-                onClick={() => setCurrentPage('catalog')}
+                onClick={() => navigate('/catalog')}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.5 }}

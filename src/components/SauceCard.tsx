@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ShoppingCart, Heart } from 'lucide-react';
 import type { Product } from '../data/products';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import buffalo_sauce from '../assets/buffalo_sauce.png';
 import chipotle_ranch from '../assets/chipotle_ranch.png';
 import golden_dip from '../assets/golden_dip.png';
@@ -19,11 +20,11 @@ const imageMap: Record<string, string> = {
 interface SauceCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
-  onSelectProduct: (product: Product) => void;
 }
 
-export const SauceCard: React.FC<SauceCardProps> = ({ product, onAddToCart, onSelectProduct }) => {
+export const SauceCard: React.FC<SauceCardProps> = ({ product, onAddToCart }) => {
   const [liked, setLiked] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <motion.article 
@@ -33,7 +34,7 @@ export const SauceCard: React.FC<SauceCardProps> = ({ product, onAddToCart, onSe
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       {/* ── Image Area ── */}
-      <div className="card-minimal-image" onClick={() => onSelectProduct(product)}>
+      <div className="card-minimal-image" onClick={() => navigate(`/product/${product.id}`)}>
         <img
           src={imageMap[product.imageName] ?? buffalo_sauce}
           alt={product.name}
@@ -78,7 +79,7 @@ export const SauceCard: React.FC<SauceCardProps> = ({ product, onAddToCart, onSe
 
       {/* ── Content Area ── */}
       <div className="card-minimal-content">
-        <h3 className="minimal-title" onClick={() => onSelectProduct(product)}>{product.name}</h3>
+        <h3 className="minimal-title" onClick={() => navigate(`/product/${product.id}`)}>{product.name}</h3>
         <p className="minimal-reviews">★★★★★ <span>12 Reviews</span></p>
         <p className="minimal-price">
           Rs. {product.price} <span className="minimal-size">({product.size})</span>

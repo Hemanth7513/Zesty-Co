@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import type { Product } from './data/products';
 import { Header } from './components/Header';
@@ -14,8 +15,6 @@ import { Account } from './pages/Account';
 
 // ── Types ──────────────────────────────────────────────
 
-type Page = 'home' | 'catalog' | 'about' | 'contact' | 'product' | 'account';
-
 interface CartItem {
   product: Product;
   quantity: number;
@@ -24,8 +23,7 @@ interface CartItem {
 // ── App ────────────────────────────────────────────────
 
 export default function App() {
-  const [page, setPage]         = useState<Page>('home');
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const location = useLocation();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   
   const [cart, setCart]         = useState<CartItem[]>(() => {
@@ -40,7 +38,7 @@ export default function App() {
   const [drawerOpen, setDrawer] = useState(false);
 
   // Scroll to top whenever the page changes
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [page]);
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [location.pathname]);
 
   // Persist cart
   useEffect(() => {
@@ -83,29 +81,22 @@ export default function App() {
       <Header
         cartCount={cartCount}
         onCartClick={() => setDrawer(true)}
-        currentPage={page}
-        setCurrentPage={setPage}
       />
 
       <main style={{ overflowX: 'hidden' }}>
         <AnimatePresence mode="wait">
-          {page === 'home'    && <Home    key="home"    onAddToCart={addToCart} setCurrentPage={setPage} onSelectProduct={(p) => { setSelectedProduct(p); setPage('product'); }} />}
-          {page === 'catalog' && <Catalog key="catalog" onAddToCart={addToCart} onSelectProduct={(p) => { setSelectedProduct(p); setPage('product'); }} />}
-          {page === 'about'   && <About   key="about"   />}
-          {page === 'contact' && <Contact key="contact" />}
-          {page === 'account' && <Account key="account" />}
-          {page === 'product' && selectedProduct && (
-            <ProductDetail 
-              key="product"
-              product={selectedProduct} 
-              onAddToCart={addToCart} 
-              onBack={() => setPage('catalog')} 
-            />
-          )}
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<Home onAddToCart={addToCart} />} />
+            <Route path="/catalog" element={<Catalog onAddToCart={addToCart} />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/product/:id" element={<ProductDetail onAddToCart={addToCart} />} />
+          </Routes>
         </AnimatePresence>
       </main>
 
-      <Footer setCurrentPage={setPage} />
+      <Footer />
 
       <OrderDrawer
         isOpen={drawerOpen}

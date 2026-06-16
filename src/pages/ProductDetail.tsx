@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { ShoppingCart, CheckCircle2, Utensils, ArrowLeft } from 'lucide-react';
 import type { Product } from '../data/products';
+import { products } from '../data/products';
 import { PageTransition } from '../components/PageTransition';
 import { motion } from 'framer-motion';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import buffalo_sauce from '../assets/buffalo_sauce.png';
 import chipotle_ranch from '../assets/chipotle_ranch.png';
@@ -21,15 +23,30 @@ const imageMap: Record<string, string> = {
 const HEAT_CLASSES = ['l1', 'l2', 'l3', 'l4', 'l5'];
 
 interface ProductDetailProps {
-  product: Product;
   onAddToCart: (product: Product) => void;
-  onBack: () => void;
 }
 
-export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCart, onBack }) => {
+export const ProductDetail: React.FC<ProductDetailProps> = ({ onAddToCart }) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const product = products.find(p => p.id === id);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [product.id]);
+  }, [id]);
+
+  if (!product) {
+    return (
+      <PageTransition>
+        <div className="page-wrapper" style={{ paddingTop: '100px', textAlign: 'center', minHeight: '60vh' }}>
+          <h2>Product Not Found</h2>
+          <button className="premium-back-btn" onClick={() => navigate('/catalog')} style={{ marginTop: '2rem' }}>
+            <ArrowLeft size={18} /> Back to Collection
+          </button>
+        </div>
+      </PageTransition>
+    );
+  }
 
   return (
     <PageTransition>
@@ -37,7 +54,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCa
         <div className="container" style={{ padding: '2rem 1rem', maxWidth: '1000px', margin: '0 auto', position: 'relative' }}>
           <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap' }}>
             <div style={{ flex: '1 1 400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <button type="button" onClick={(e) => { e.preventDefault(); onBack(); }} className="premium-back-btn" style={{ marginBottom: '1rem', alignSelf: 'flex-start' }}>
+              <button type="button" onClick={() => navigate('/catalog')} className="premium-back-btn" style={{ marginBottom: '1rem', alignSelf: 'flex-start' }}>
                 <ArrowLeft size={18} /> Back to Collection
               </button>
             <div style={{ background: '#f8f8f8', borderRadius: '16px', padding: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>

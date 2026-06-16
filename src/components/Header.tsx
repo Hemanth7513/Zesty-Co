@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { ShoppingBag, Menu, X } from 'lucide-react';
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
+import { Link, useLocation } from 'react-router-dom';
 
 interface HeaderProps {
   cartCount: number;
   onCartClick: () => void;
-  currentPage: 'home' | 'catalog' | 'about' | 'contact' | 'product' | 'account';
-  setCurrentPage: (page: 'home' | 'catalog' | 'about' | 'contact' | 'product' | 'account') => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   cartCount,
   onCartClick,
-  currentPage,
-  setCurrentPage,
 }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const currentPage = location.pathname;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -24,20 +23,15 @@ export const Header: React.FC<HeaderProps> = ({
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handleNavClick = (page: 'home' | 'catalog' | 'about' | 'contact') => {
-    setCurrentPage(page);
-    setMobileMenuOpen(false);
-  };
-
-  const nav = (page: 'home' | 'catalog' | 'about' | 'contact', label: string) => (
-    <li key={page}>
-      <a
-        href={`#${page}`}
-        className={currentPage === page ? 'active' : ''}
-        onClick={(e) => { e.preventDefault(); handleNavClick(page); }}
+  const nav = (path: string, label: string) => (
+    <li key={path}>
+      <Link
+        to={path}
+        className={currentPage === path ? 'active' : ''}
+        onClick={() => setMobileMenuOpen(false)}
       >
         {label}
-      </a>
+      </Link>
     </li>
   );
 
@@ -51,10 +45,10 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         {/* Premium wordmark logo — no icon, just refined type */}
-        <a
-          href="#home"
+        <Link
+          to="/"
           className="logo"
-          onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }}
+          onClick={() => setMobileMenuOpen(false)}
           aria-label="Zesty Co. — home"
         >
           {/* Thin chilli glyph as SVG — geometric, not cartoonish */}
@@ -84,15 +78,15 @@ export const Header: React.FC<HeaderProps> = ({
             />
           </svg>
           Zesty <em>Co.</em>
-        </a>
+        </Link>
 
         {/* Nav */}
         <nav aria-label="Main navigation" className={`main-nav ${mobileMenuOpen ? 'open' : ''}`}>
           <ul className="nav-links">
-            {nav('home', 'Home')}
-            {nav('catalog', 'Our Sauces')}
-            {nav('about', 'Our Story')}
-            {nav('contact', 'Contact')}
+            {nav('/', 'Home')}
+            {nav('/catalog', 'Our Sauces')}
+            {nav('/about', 'Our Story')}
+            {nav('/contact', 'Contact')}
           </ul>
         </nav>
 
@@ -107,9 +101,9 @@ export const Header: React.FC<HeaderProps> = ({
           </SignedOut>
           <SignedIn>
             <div className="account-controls" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <button onClick={() => setCurrentPage('account')} style={{ background: 'none', border: 'none', color: '#666', fontSize: '0.9rem', fontWeight: 'bold', cursor: 'pointer', padding: '4px 8px' }}>
+              <Link to="/account" style={{ background: 'none', border: 'none', color: '#666', fontSize: '0.9rem', fontWeight: 'bold', cursor: 'pointer', padding: '4px 8px', textDecoration: 'none' }}>
                 Orders
-              </button>
+              </Link>
               <UserButton appearance={{ elements: { userButtonAvatarBox: { width: 32, height: 32 } } }} />
             </div>
           </SignedIn>

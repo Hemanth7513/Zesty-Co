@@ -1,15 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-interface FooterProps {
-  setCurrentPage: (page: 'home' | 'catalog' | 'about' | 'contact' | 'product' | 'account') => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
-  const nav = (page: 'home' | 'catalog' | 'about' | 'contact', label: string) => (
-    <li key={page}>
-      <a href={`#${page}`} onClick={(e) => { e.preventDefault(); setCurrentPage(page); }}>
+export const Footer: React.FC = () => {
+  const nav = (path: string, label: string) => (
+    <li key={path}>
+      <Link to={path}>
         {label}
-      </a>
+      </Link>
     </li>
   );
 
@@ -34,9 +31,9 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
         <div className="footer-col">
           <h4>Explore</h4>
           <ul className="footer-links">
-            {nav('home', 'Home')}
-            {nav('catalog', 'Our Sauces')}
-            {nav('about', 'Our Story')}
+            {nav('/', 'Home')}
+            {nav('/catalog', 'Our Sauces')}
+            {nav('/about', 'Our Story')}
           </ul>
         </div>
 
@@ -44,7 +41,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
         <div className="footer-col">
           <h4>Get in Touch</h4>
           <ul className="footer-links">
-            <li><a href="#contact" onClick={(e) => { e.preventDefault(); setCurrentPage('contact'); }} style={{ color: 'inherit', textDecoration: 'none' }}>Contact Us</a></li>
+            <li><Link to="/contact" style={{ color: 'inherit', textDecoration: 'none' }}>Contact Us</Link></li>
             <li>hello@zestyco.in</li>
             <li>+91 98765 43210</li>
           </ul>

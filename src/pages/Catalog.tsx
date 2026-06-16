@@ -8,7 +8,6 @@ import { motion } from 'framer-motion';
 
 interface CatalogProps {
   onAddToCart: (product: Product) => void;
-  onSelectProduct: (product: Product) => void;
 }
 
 type Filter = 'All' | 'Hot Sauce' | 'Dips & Dressings';
@@ -28,7 +27,7 @@ const itemVariants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.4 } }
 };
 
-export const Catalog: React.FC<CatalogProps> = ({ onAddToCart, onSelectProduct }) => {
+export const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
   const [query, setQuery]       = useState('');
   const [filter, setFilter]     = useState<Filter>('All');
 
@@ -101,7 +100,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onAddToCart, onSelectProduct }
               >
                 {visible.map((product) => (
                   <motion.div key={product.id} variants={itemVariants}>
-                    <SauceCard product={product} onAddToCart={onAddToCart} onSelectProduct={onSelectProduct} />
+                    <SauceCard product={product} onAddToCart={onAddToCart} />
                   </motion.div>
                 ))}
               </motion.div>
