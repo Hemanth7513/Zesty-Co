@@ -1690,10 +1690,11 @@ nav { display: flex; justify-content: center; }
 }
 
 .commitment-strip p {
-  color: var(--text-400);
+  color: var(--surface-2);
   max-width: 700px;
   margin: 0 auto var(--space-8);
   font-size: 1.05rem;
+  line-height: 1.6;
 }
 
 .commitment-badges {
@@ -2090,7 +2091,7 @@ nav { display: flex; justify-content: center; }
 }
 
 .premium-contact-card p {
-  color: var(--text-400);
+  color: var(--surface-2);
   margin-bottom: 1.5rem;
   line-height: 1.5;
   font-size: 0.95rem;
