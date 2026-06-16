@@ -809,14 +809,14 @@ nav { display: flex; justify-content: center; }
    ======================================== */
 .sauces-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Force large columns */
-  gap: var(--space-12); /* Massive gap */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Reduced from 400px to make images smaller */
+  gap: var(--space-10) var(--space-8);
 }
 
 @media (max-width: 768px) {
   .sauces-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-10);
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile to prevent huge images */
+    gap: var(--space-6) var(--space-4);
   }
 }
 
