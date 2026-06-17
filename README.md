@@ -1,70 +1,51 @@
-# Zesty Co. — Premium Clean-Label Hot Sauces
+# Zesty Co.
 
-Zesty Co. is a D2C premium sauce brand featuring clean-label, eggless Western-inspired hot sauces and dressings custom-tailored for the Indian palate. Made with 100% natural ingredients and zero artificial preservatives.
+Zesty Co. is a clean-label, eggless sauce brand offering Western-inspired recipes customized for the Indian palate. The project is built using a modern, interactive single-page application architecture.
 
-Live Deployment: [Zesty Co. on Vercel](https://zesty-co.vercel.app)
-
----
-
-## 🌶️ Key Features
-
-### 1. **Interactive 3D Carousel Hero**
-- A custom-engineered horizontal carousel featuring clean cutouts of Zesty Co. signature sauces (Buffalo Sauce, Classic Ranch, Chipotle Ranch, Golden Dip).
-- **Smooth Animations**: Clicking any side bottle triggers a high-performance translation and scale transition to smoothly rotate that bottle to the center.
-- **Responsive Layout**: Designed to adapt elegantly for both laptop/desktop viewports and mobile screens, adjusting headings and bottle sizes dynamically to avoid text overlap.
-- **Premium Aesthetics**: Features a subtle overlay grain texture effect and a bold background "ZESTY CO." ghost text in the Anton typeface.
-
-### 2. **D2C WhatsApp Checkout System**
-- Custom order drawer calculating subtotal, delivery charges, and final amounts.
-- **WhatsApp Integration**: Compiles ordered items, sizes, quantities, and customer shipping/payment details into a beautifully formatted WhatsApp text message template that redirects customers directly to WhatsApp checkout.
-
-### 3. **Secure Auth Integration**
-- Out-of-the-box user authentication and profile management powered by Clerk.
+Live Site: [Zesty Co. on Vercel](https://zesty-co.vercel.app)
 
 ---
 
-## 🛠️ Technology Stack
+## Core Features
 
-- **Framework**: [React](https://react.dev/) + [Vite](https://vite.dev/)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: Vanilla CSS + TailwindCSS (for utility layouts)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Authentication**: [Clerk React SDK](https://clerk.com/)
+- **Interactive 3D Carousel**: A responsive homepage carousel featuring smooth transition animations when clicking side bottles, optimized for both desktop and mobile viewports.
+- **WhatsApp Checkout**: An integrated cart and checkout flow that compiles order details into a formatted WhatsApp message for direct ordering.
+- **User Authentication**: Secure user login and profile management integrated using Clerk.
 
 ---
 
-## 🚀 Getting Started
+## Technical Stack
 
-### 1. Prerequisites
-Ensure you have [Node.js](https://nodejs.org/) installed (v18+ recommended).
+- **Framework**: React + Vite
+- **Language**: TypeScript
+- **Styling**: Vanilla CSS + TailwindCSS (layout utility classes)
+- **Icons**: Lucide React
+- **Auth**: Clerk React SDK
 
-### 2. Install Dependencies
+---
+
+## Getting Started
+
+### 1. Installation
+Install the project dependencies:
 ```bash
 npm install
 ```
 
-### 3. Setup Environment Variables
+### 2. Configuration
 Create a `.env` file in the root directory and add your Clerk publishable key:
 ```env
-VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key_here
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 ```
 
-### 4. Running the Development Server
+### 3. Development
+Start the local development server:
 ```bash
 npm run dev
 ```
-Open `http://localhost:5173/` in your browser.
 
-### 5. Building for Production
+### 4. Production Build
+Compile the optimized production build:
 ```bash
 npm run build
 ```
-The optimized bundle will be compiled into the `dist/` directory.
-
----
-
-## 📁 Directory Structure
-- `src/components/`: Houses reusable UI components (e.g., `CarouselHero.tsx`, `Header.tsx`, `OrderDrawer.tsx`).
-- `src/pages/`: Main views/routes (e.g., `Home.tsx`, `Catalog.tsx`, `Account.tsx`).
-- `src/data/`: Static product mock information (`products.ts`).
-- `public/`: Cutout assets and images.
