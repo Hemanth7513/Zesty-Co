@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const IMAGES = [
-  { src: '/buffalo_sauce_cutout.png', bg: '#C92C2C', id: 'buffalo', title: 'BUFFALO' },
+  { src: '/buffalo_sauce_cutout.png', bg: '#C92C2C', id: 'buffalo', title: 'BUFFALO SAUCE' },
   { src: '/classic_ranch_cutout.png', bg: '#10B981', id: 'classic', title: 'CLASSIC RANCH' },
   { src: '/chipotle_ranch_cutout.png', bg: '#F59E0B', id: 'chipotle', title: 'CHIPOTLE RANCH' },
   { src: '/golden_dip_cutout.png', bg: '#FBBF24', id: 'golden', title: 'GOLDEN DIP' },
@@ -90,10 +90,9 @@ export const CarouselHero: React.FC = () => {
   const grainSvg = `data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E`;
 
   return (
-    <motion.div
-      animate={{ backgroundColor: IMAGES[activeIndex].bg }}
-      transition={{ duration: 0.6, ease: [0.2, 0.8, 0.2, 1] }}
+    <div
       style={{
+        backgroundColor: '#C92C2C', // Fixed red color as requested
         height: '100vh',
         fontFamily: "'Inter', sans-serif",
       }}
@@ -120,6 +119,10 @@ export const CarouselHero: React.FC = () => {
               <motion.div
                 key={img.id}
                 initial={false}
+                onClick={() => {
+                  if (role !== 'center') handleBottleClick(index);
+                }}
+                className={`absolute flex flex-col items-center justify-center ${role !== 'center' ? 'pointer-events-auto cursor-pointer' : 'pointer-events-none'}`}
                 animate={{
                   x: style.x,
                   y: style.y,
@@ -131,10 +134,6 @@ export const CarouselHero: React.FC = () => {
                 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 25, mass: 1 }}
                 style={{
-                  position: 'absolute',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
                   width: style.width,
                   height: style.height,
                 }}
@@ -143,27 +142,35 @@ export const CarouselHero: React.FC = () => {
                   src={img.src}
                   alt={img.title}
                   draggable={false}
-                  onClick={() => {
-                    if (role !== 'center') handleBottleClick(index);
-                  }}
                   animate={{
                     filter: role === 'center' ? 'drop-shadow(0 40px 50px rgba(0,0,0,0.5))' : 'drop-shadow(0 20px 30px rgba(0,0,0,0.3))'
                   }}
                   transition={{ duration: 0.4 }}
-                  className={`transition-transform duration-300 ${role !== 'center' ? 'pointer-events-auto cursor-pointer hover:scale-[1.05]' : 'pointer-events-none'}`}
+                  className={`w-full h-full object-contain object-center transition-transform duration-300 ${role !== 'center' ? 'hover:scale-[1.05]' : ''}`}
                   style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                    objectPosition: 'center',
                     transform: 'scale(1.5)',
                   }}
                 />
+
+                {/* Sauce Name below bottle */}
+                <motion.div
+                  className="absolute -bottom-16 sm:-bottom-24 w-[200%] text-center pointer-events-none"
+                  animate={{
+                    opacity: role === 'center' ? 1 : 0.6,
+                    scale: role === 'center' ? 1 : 0.8,
+                    y: role === 'center' ? 0 : -10
+                  }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <h3 className="text-white font-black uppercase tracking-widest text-lg sm:text-2xl drop-shadow-md">
+                    {img.title}
+                  </h3>
+                </motion.div>
               </motion.div>
             );
           })}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
