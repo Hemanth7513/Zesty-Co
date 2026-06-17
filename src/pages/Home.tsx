@@ -4,7 +4,7 @@ import { PageTransition } from '../components/PageTransition';
 import { CarouselHero } from '../components/CarouselHero';
 
 interface HomeProps {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   onAddToCart: (product: Product) => void;
 }
 

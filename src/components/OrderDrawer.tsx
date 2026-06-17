@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import React, { useState, useEffect } from 'react';
 import { X, Trash2, MessageCircle, ShoppingBag } from 'lucide-react';
 import { useUser } from '@clerk/clerk-react';
@@ -55,6 +56,7 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
       const saved = localStorage.getItem(storageKey);
       if (saved) {
         const d = JSON.parse(saved);
+         
         setName(d.name || clerkUser?.fullName || '');
         setMobile(d.mobile || '');
         setDoorNo(d.doorNo || '');
@@ -63,6 +65,7 @@ export const OrderDrawer: React.FC<OrderDrawerProps> = ({
         setPincode(d.pincode || '');
         if (d.paymentMethod) setPaymentMethod(d.paymentMethod);
       } else if (clerkUser) {
+         
         setName(clerkUser.fullName || '');
         setMobile('');
         setDoorNo('');
