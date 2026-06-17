@@ -1,73 +1,70 @@
-# React + TypeScript + Vite
+# Zesty Co. — Premium Clean-Label Hot Sauces
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Zesty Co. is a D2C premium sauce brand featuring clean-label, eggless Western-inspired hot sauces and dressings custom-tailored for the Indian palate. Made with 100% natural ingredients and zero artificial preservatives.
 
-Currently, two official plugins are available:
+Live Deployment: [Zesty Co. on Vercel](https://zesty-co.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🌶️ Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. **Interactive 3D Carousel Hero**
+- A custom-engineered horizontal carousel featuring clean cutouts of Zesty Co. signature sauces (Buffalo Sauce, Classic Ranch, Chipotle Ranch, Golden Dip).
+- **Smooth Animations**: Clicking any side bottle triggers a high-performance translation and scale transition to smoothly rotate that bottle to the center.
+- **Responsive Layout**: Designed to adapt elegantly for both laptop/desktop viewports and mobile screens, adjusting headings and bottle sizes dynamically to avoid text overlap.
+- **Premium Aesthetics**: Features a subtle overlay grain texture effect and a bold background "ZESTY CO." ghost text in the Anton typeface.
 
-## Expanding the ESLint configuration
+### 2. **D2C WhatsApp Checkout System**
+- Custom order drawer calculating subtotal, delivery charges, and final amounts.
+- **WhatsApp Integration**: Compiles ordered items, sizes, quantities, and customer shipping/payment details into a beautifully formatted WhatsApp text message template that redirects customers directly to WhatsApp checkout.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 3. **Secure Auth Integration**
+- Out-of-the-box user authentication and profile management powered by Clerk.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🛠️ Technology Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Framework**: [React](https://react.dev/) + [Vite](https://vite.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: Vanilla CSS + TailwindCSS (for utility layouts)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Authentication**: [Clerk React SDK](https://clerk.com/)
+
+---
+
+## 🚀 Getting Started
+
+### 1. Prerequisites
+Ensure you have [Node.js](https://nodejs.org/) installed (v18+ recommended).
+
+### 2. Install Dependencies
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 3. Setup Environment Variables
+Create a `.env` file in the root directory and add your Clerk publishable key:
+```env
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key_here
 ```
+
+### 4. Running the Development Server
+```bash
+npm run dev
+```
+Open `http://localhost:5173/` in your browser.
+
+### 5. Building for Production
+```bash
+npm run build
+```
+The optimized bundle will be compiled into the `dist/` directory.
+
+---
+
+## 📁 Directory Structure
+- `src/components/`: Houses reusable UI components (e.g., `CarouselHero.tsx`, `Header.tsx`, `OrderDrawer.tsx`).
+- `src/pages/`: Main views/routes (e.g., `Home.tsx`, `Catalog.tsx`, `Account.tsx`).
+- `src/data/`: Static product mock information (`products.ts`).
+- `public/`: Cutout assets and images.
