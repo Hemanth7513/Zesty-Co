@@ -31,8 +31,8 @@ export const CarouselHero: React.FC = () => {
   };
 
   const getStyleForRole = (role: string) => {
-    const width = isMobile ? '50vw' : '22vw';
-    const height = isMobile ? '50vh' : '65vh';
+    const width = isMobile ? '45vw' : '18vw';
+    const height = isMobile ? '42vh' : '48vh';
     const baseTransition = 'transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1), left 600ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 600ms cubic-bezier(0.2, 0.8, 0.2, 1)';
 
     switch (role) {
@@ -112,7 +112,7 @@ export const CarouselHero: React.FC = () => {
           className="absolute select-none pointer-events-none text-center uppercase font-black"
           style={{
             fontFamily: "'Anton', sans-serif",
-            fontSize: isMobile ? '18vw' : '20vw',
+            fontSize: isMobile ? '16vw' : '18vw',
             color: 'rgba(255, 255, 255, 0.05)',
             left: '50%',
             top: '46%',
@@ -151,7 +151,7 @@ export const CarouselHero: React.FC = () => {
         <div 
           className="absolute left-1/2 -translate-x-1/2 text-center z-40"
           style={{
-            bottom: '10%',
+            bottom: '7%',
           }}
         >
           <Link
@@ -193,13 +193,13 @@ export const CarouselHero: React.FC = () => {
                   src={img.src}
                   alt={img.title}
                   draggable={false}
-                  className="transition-transform duration-300 group-hover:scale-[1.55]"
+                  className="transition-transform duration-300 group-hover:scale-[1.2]"
                   style={{
                     width: '100%',
                     height: '100%',
                     objectFit: 'contain',
                     objectPosition: 'center',
-                    transform: 'scale(1.5)',
+                    transform: 'scale(1.15)',
                     filter: role === 'center' ? 'drop-shadow(0 40px 50px rgba(0,0,0,0.5))' : 'drop-shadow(0 20px 30px rgba(0,0,0,0.3))',
                     transition: 'filter 600ms ease, transform 300ms ease',
                   }}
