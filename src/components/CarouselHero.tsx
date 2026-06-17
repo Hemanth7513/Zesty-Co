@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 
 const IMAGES = [
-  { src: '/buffalo_sauce_cutout.png', bg: '#C92C2C', id: 'buffalo', title: 'BUFFALO SAUCE' },
-  { src: '/classic_ranch_cutout.png', bg: '#10B981', id: 'classic', title: 'CLASSIC RANCH' },
-  { src: '/chipotle_ranch_cutout.png', bg: '#F59E0B', id: 'chipotle', title: 'CHIPOTLE RANCH' },
-  { src: '/golden_dip_cutout.png', bg: '#FBBF24', id: 'golden', title: 'GOLDEN DIP' },
+  { src: '/buffalo_sauce_cutout.png', id: 'buffalo', title: 'BUFFALO SAUCE' },
+  { src: '/classic_ranch_cutout.png', id: 'classic', title: 'CLASSIC RANCH' },
+  { src: '/chipotle_ranch_cutout.png', id: 'chipotle', title: 'CHIPOTLE RANCH' },
+  { src: '/golden_dip_cutout.png', id: 'golden', title: 'GOLDEN DIP' },
 ];
 
 export const CarouselHero: React.FC = () => {
@@ -33,56 +32,53 @@ export const CarouselHero: React.FC = () => {
   const getStyleForRole = (role: string) => {
     const width = isMobile ? '50vw' : '22vw';
     const height = isMobile ? '50vh' : '65vh';
+    const baseTransition = 'transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1), left 600ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 600ms cubic-bezier(0.2, 0.8, 0.2, 1)';
 
     switch (role) {
       case 'center':
         return {
-          x: '-50%',
-          y: '-50%',
-          scale: 1.2,
+          transform: `translate(-50%, -50%) scale(1.2)`,
           left: '50%',
           top: '50%',
           width,
           height,
           zIndex: 30,
           opacity: 1,
+          transition: baseTransition,
         };
       case 'left':
         return {
-          x: '-50%',
-          y: '-50%',
-          scale: 0.9,
-          left: isMobile ? '20%' : '35%',
+          transform: `translate(-50%, -50%) scale(0.9)`,
+          left: isMobile ? '20%' : '30%',
           top: '50%',
           width,
           height,
           zIndex: 20,
           opacity: 0.9,
+          transition: baseTransition,
         };
       case 'right':
         return {
-          x: '-50%',
-          y: '-50%',
-          scale: 0.9,
-          left: isMobile ? '80%' : '65%',
+          transform: `translate(-50%, -50%) scale(0.9)`,
+          left: isMobile ? '80%' : '70%',
           top: '50%',
           width,
           height,
           zIndex: 20,
           opacity: 0.9,
+          transition: baseTransition,
         };
       case 'back':
       default:
         return {
-          x: '-50%',
-          y: '-50%',
-          scale: 0.7,
+          transform: `translate(-50%, -50%) scale(0.7)`,
           left: '50%',
           top: '50%',
           width,
           height,
           zIndex: 10,
           opacity: 0.4,
+          transition: baseTransition,
         };
     }
   };
@@ -92,7 +88,7 @@ export const CarouselHero: React.FC = () => {
   return (
     <div
       style={{
-        backgroundColor: '#C92C2C', // Fixed red color as requested
+        backgroundColor: '#C92C2C', // FIXED RED BACKGROUND
         height: '100vh',
         fontFamily: "'Inter', sans-serif",
       }}
@@ -116,57 +112,51 @@ export const CarouselHero: React.FC = () => {
             const role = getRole(index);
             const style = getStyleForRole(role);
             return (
-              <motion.div
+              <div
                 key={img.id}
-                initial={false}
-                onClick={() => {
-                  if (role !== 'center') handleBottleClick(index);
-                }}
-                className={`absolute flex flex-col items-center justify-center ${role !== 'center' ? 'pointer-events-auto cursor-pointer' : 'pointer-events-none'}`}
-                animate={{
-                  x: style.x,
-                  y: style.y,
-                  scale: style.scale,
-                  left: style.left,
-                  top: style.top,
-                  opacity: style.opacity,
-                  zIndex: style.zIndex,
-                }}
-                transition={{ type: 'spring', stiffness: 200, damping: 25, mass: 1 }}
                 style={{
-                  width: style.width,
-                  height: style.height,
+                  position: 'absolute',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  willChange: 'transform, left, opacity',
+                  ...style,
                 }}
               >
-                <motion.img
+                <img
                   src={img.src}
                   alt={img.title}
                   draggable={false}
-                  animate={{
-                    filter: role === 'center' ? 'drop-shadow(0 40px 50px rgba(0,0,0,0.5))' : 'drop-shadow(0 20px 30px rgba(0,0,0,0.3))'
+                  onClick={() => {
+                    if (role !== 'center') handleBottleClick(index);
                   }}
-                  transition={{ duration: 0.4 }}
-                  className={`w-full h-full object-contain object-center transition-transform duration-300 ${role !== 'center' ? 'hover:scale-[1.05]' : ''}`}
+                  className={`transition-transform duration-300 ${role !== 'center' ? 'pointer-events-auto cursor-pointer hover:scale-[1.05]' : 'pointer-events-none'}`}
                   style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    objectPosition: 'center',
                     transform: 'scale(1.5)',
+                    filter: role === 'center' ? 'drop-shadow(0 40px 50px rgba(0,0,0,0.5))' : 'drop-shadow(0 20px 30px rgba(0,0,0,0.3))',
+                    transition: 'filter 600ms ease',
                   }}
                 />
-
-                {/* Sauce Name below bottle */}
-                <motion.div
-                  className="absolute -bottom-16 sm:-bottom-24 w-[200%] text-center pointer-events-none"
-                  animate={{
+                
+                {/* Sauce Labels Below Bottles */}
+                <div 
+                  className="absolute -bottom-12 sm:-bottom-20 w-[200%] text-center pointer-events-none"
+                  style={{
                     opacity: role === 'center' ? 1 : 0.6,
-                    scale: role === 'center' ? 1 : 0.8,
-                    y: role === 'center' ? 0 : -10
+                    transform: `scale(${role === 'center' ? 1 : 0.8}) translateY(${role === 'center' ? '0px' : '-10px'})`,
+                    transition: 'all 600ms cubic-bezier(0.2, 0.8, 0.2, 1)',
                   }}
-                  transition={{ duration: 0.4 }}
                 >
                   <h3 className="text-white font-black uppercase tracking-widest text-lg sm:text-2xl drop-shadow-md">
                     {img.title}
                   </h3>
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             );
           })}
         </div>
