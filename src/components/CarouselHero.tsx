@@ -111,9 +111,14 @@ export const CarouselHero: React.FC = () => {
           {IMAGES.map((img, index) => {
             const role = getRole(index);
             const style = getStyleForRole(role);
+            const isClickable = role === 'left' || role === 'right';
             return (
               <div
                 key={img.id}
+                onClick={() => {
+                  if (isClickable) handleBottleClick(index);
+                }}
+                className={`transition-all duration-300 ${isClickable ? 'pointer-events-auto cursor-pointer group' : 'pointer-events-none'}`}
                 style={{
                   position: 'absolute',
                   display: 'flex',
@@ -128,10 +133,7 @@ export const CarouselHero: React.FC = () => {
                   src={img.src}
                   alt={img.title}
                   draggable={false}
-                  onClick={() => {
-                    if (role !== 'center') handleBottleClick(index);
-                  }}
-                  className={`transition-transform duration-300 ${role !== 'center' ? 'pointer-events-auto cursor-pointer hover:scale-[1.05]' : 'pointer-events-none'}`}
+                  className="transition-transform duration-300 group-hover:scale-[1.55]"
                   style={{
                     width: '100%',
                     height: '100%',
@@ -139,7 +141,7 @@ export const CarouselHero: React.FC = () => {
                     objectPosition: 'center',
                     transform: 'scale(1.5)',
                     filter: role === 'center' ? 'drop-shadow(0 40px 50px rgba(0,0,0,0.5))' : 'drop-shadow(0 20px 30px rgba(0,0,0,0.3))',
-                    transition: 'filter 600ms ease',
+                    transition: 'filter 600ms ease, transform 300ms ease',
                   }}
                 />
                 
