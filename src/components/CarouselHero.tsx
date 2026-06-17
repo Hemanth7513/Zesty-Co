@@ -107,10 +107,28 @@ export const CarouselHero: React.FC = () => {
           }}
         />
 
+        {/* Custom style for interactive transitions */}
+        <style>{`
+          .hover-cta-btn {
+            transition: all 300ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+          }
+          .hover-cta-btn:hover {
+            background-color: #111111 !important;
+            color: #ffffff !important;
+            transform: translateY(-3px) scale(1.02) !important;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25) !important;
+          }
+        `}</style>
+
         {/* Background Ghost Text */}
         <div
-          className="absolute select-none pointer-events-none text-center uppercase font-black"
           style={{
+            position: 'absolute',
+            userSelect: 'none',
+            pointerEvents: 'none',
+            textAlign: 'center',
+            textTransform: 'uppercase',
+            fontWeight: 900,
             fontFamily: "'Anton', sans-serif",
             fontSize: isMobile ? '16vw' : '18vw',
             color: 'rgba(255, 255, 255, 0.05)',
@@ -127,21 +145,41 @@ export const CarouselHero: React.FC = () => {
 
         {/* Top Tagline Header */}
         <div 
-          className="absolute left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none"
           style={{
-            top: '12%',
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            textAlign: 'center',
+            zIndex: 20,
+            pointerEvents: 'none',
+            top: isMobile ? '8%' : '10%',
             width: '90%',
           }}
         >
           <h1 
-            className="text-white font-extrabold tracking-[0.2em] uppercase text-sm sm:text-base md:text-xl drop-shadow-sm"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: isMobile ? '1.8rem' : '3.6rem',
+              fontWeight: 900,
+              color: '#ffffff',
+              letterSpacing: '-0.01em',
+              margin: '0 auto',
+              lineHeight: 1.15,
+              textShadow: '0 2px 10px rgba(0,0,0,0.15)',
+            }}
           >
             Western Sauces. Indian Soul.
           </h1>
           <p 
-            className="text-white/60 tracking-[0.12em] uppercase text-[10px] sm:text-xs mt-2"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            style={{
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: isMobile ? '0.65rem' : '0.85rem',
+              color: 'rgba(255, 255, 255, 0.75)',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              marginTop: isMobile ? '6px' : '12px',
+              fontWeight: 700,
+            }}
           >
             100% Natural • No Artificial Preservatives • Premium Clean Label
           </p>
@@ -149,17 +187,32 @@ export const CarouselHero: React.FC = () => {
 
         {/* Bottom CTA Button */}
         <div 
-          className="absolute left-1/2 -translate-x-1/2 text-center z-40"
           style={{
-            bottom: '7%',
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            textAlign: 'center',
+            zIndex: 40,
+            bottom: isMobile ? '6%' : '8%',
           }}
         >
           <Link
             to="/catalog"
-            className="inline-flex items-center justify-center bg-white text-[#C92C2C] font-extrabold uppercase tracking-wider text-xs sm:text-sm px-6 py-3 sm:px-8 sm:py-4 transition-all duration-300 hover:bg-black hover:text-white hover:-translate-y-0.5 hover:shadow-lg pointer-events-auto"
+            className="hover-cta-btn"
             style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#ffffff',
+              color: '#C92C2C',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              borderRadius: '0',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '0.12em',
+              fontSize: isMobile ? '0.7rem' : '0.85rem',
+              padding: isMobile ? '12px 24px' : '16px 36px',
+              textDecoration: 'none',
+              boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)',
             }}
           >
             Explore Catalog
