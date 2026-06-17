@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 const IMAGES = [
   { src: '/buffalo_sauce_cutout.png', bg: '#C92C2C', id: 'buffalo', title: 'BUFFALO' },
@@ -11,7 +9,6 @@ const IMAGES = [
 ];
 
 export const CarouselHero: React.FC = () => {
-  const routerNavigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
