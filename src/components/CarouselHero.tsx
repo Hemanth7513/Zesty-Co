@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const IMAGES = [
   { src: '/buffalo_sauce_cutout.png', id: 'buffalo', title: 'BUFFALO SAUCE' },
@@ -105,6 +106,65 @@ export const CarouselHero: React.FC = () => {
             backgroundRepeat: 'repeat',
           }}
         />
+
+        {/* Background Ghost Text */}
+        <div
+          className="absolute select-none pointer-events-none text-center uppercase font-black"
+          style={{
+            fontFamily: "'Anton', sans-serif",
+            fontSize: isMobile ? '18vw' : '20vw',
+            color: 'rgba(255, 255, 255, 0.05)',
+            left: '50%',
+            top: '46%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 5,
+            width: '100%',
+            letterSpacing: '0.02em',
+          }}
+        >
+          ZESTY CO.
+        </div>
+
+        {/* Top Tagline Header */}
+        <div 
+          className="absolute left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none"
+          style={{
+            top: '12%',
+            width: '90%',
+          }}
+        >
+          <h1 
+            className="text-white font-extrabold tracking-[0.2em] uppercase text-sm sm:text-base md:text-xl drop-shadow-sm"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+          >
+            Western Sauces. Indian Soul.
+          </h1>
+          <p 
+            className="text-white/60 tracking-[0.12em] uppercase text-[10px] sm:text-xs mt-2"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+          >
+            100% Natural • No Artificial Preservatives • Premium Clean Label
+          </p>
+        </div>
+
+        {/* Bottom CTA Button */}
+        <div 
+          className="absolute left-1/2 -translate-x-1/2 text-center z-40"
+          style={{
+            bottom: '10%',
+          }}
+        >
+          <Link
+            to="/catalog"
+            className="inline-flex items-center justify-center bg-white text-[#C92C2C] font-extrabold uppercase tracking-wider text-xs sm:text-sm px-6 py-3 sm:px-8 sm:py-4 transition-all duration-300 hover:bg-black hover:text-white hover:-translate-y-0.5 hover:shadow-lg pointer-events-auto"
+            style={{
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              borderRadius: '0',
+            }}
+          >
+            Explore Catalog
+          </Link>
+        </div>
 
         {/* Carousel Container */}
         <div className="absolute inset-0 z-10 pointer-events-none">
